@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.endproject.dao.RoleMenuDao">
+
+    <select id="getRoleMenu" resultType="com.endproject.Model.vo.RoleMenuOut">
+        SELECT role_menu.rid, role.`name`,menu.title
+        FROM role_menu,role,menu
+        WHERE role_menu.rid = role.id AND role_menu.mid = menu.id
+    </select>
+    <select id="getRoleMenuOutByRid" resultType="com.endproject.Model.vo.RoleMenuOut">
+        select menu.id,menu.pid,menu.title
+        from role_menu left join menu on role_menu.mid = menu.id
+        WHERE role_menu.rid = ${rid}
+    </select>
+    
+    <delete id="deleteRoleByRid">
+        delete from role_menu where rid = #{rid}
+    </delete>
+    <insert id="SaveRoleMenu" parameterType="integer">
+        insert into role_menu(rid,mid) values (${rid},${mid})
+    </insert>
+
+</mapper>

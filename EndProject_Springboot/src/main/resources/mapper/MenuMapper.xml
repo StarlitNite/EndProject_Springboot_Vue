@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.endproject.dao.MenuDao">
+    <resultMap id="menu1" type="com.endproject.entity.Menu">
+        <id property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="title" column="title"/>
+
+    </resultMap>
+    <select id="MenuTree" resultType="com.endproject.entity.Menu">
+    
+        SELECT menu.id,menu.pid,menu.title,menu.path
+        from role_menu as rm LEFT JOIN menu ON rm.mid = menu.id
+        WHERE rid = ${role_id}
+    </select>
+
+    <!--<insert id="addMenu" parameterType="com.endproject."></insert>-->
+
+
+</mapper>
