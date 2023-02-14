@@ -59,5 +59,4 @@ public class MenuController {
         menuService.saveOrUpdate(menu);
         return ApiResult.success();
     }
-
 }

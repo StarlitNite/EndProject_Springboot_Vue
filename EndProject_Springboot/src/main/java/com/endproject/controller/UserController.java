@@ -3,6 +3,7 @@ package com.endproject.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.endproject.Model.dto.LoginInfo;
+import com.endproject.Model.vo.UserVo;
 import com.endproject.entity.UserType;
 import com.endproject.service.UserService;
 import com.endproject.util.JwtUtil;
@@ -11,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import java.util.Map;
  * @author 乃王木木
  */
 @RestController
+@RequestMapping("/user")
 @Slf4j
 @Api(value = "登录接口")
 public class UserController {
@@ -31,26 +34,13 @@ public class UserController {
      */
 
     /**
-    * @Description:
+    * @Description:登录
     * @date 2022/12/23 12:15
     * @author WangNaiLinn
     **/
-    
-    /*@ApiOperation(value = "字典列表")
-    @RequestMapping("/user/login")
-    public Result<LoginInfo> login(@RequestBody LoginInfo loginInfo){
-        log.info("前端消息发过来了:{}", loginInfo.toString());
 
-
-        Result<LoginInfo> result = new Result<>();
-        result.setCode("200");
-        result.setMsg("成功");
-        result.setIsSuccess(true);
-        result.setData(loginInfo);
-        return result;
-    }*/
     @ApiOperation(value = "登录")
-    @GetMapping(value = "/user/login")
+    @GetMapping(value = "/login")
     public ApiResult<Object> login(@RequestBody LoginInfo loginInfo){
         log.info("前端消息发过来了:{}", loginInfo);
         //QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
@@ -74,7 +64,13 @@ public class UserController {
         return ApiResult.success("登录成功",map);
     }
 
+    @ApiOperation("获取用户")
+    @PostMapping("/get")
+    public ApiResult<Object> getUser(UserVo userVo){
+        Page<>
 
+        return null;
+    }
 
 
 }
