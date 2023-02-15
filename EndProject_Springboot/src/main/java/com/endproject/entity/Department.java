@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @TableName("department")
 @Data
-public class department {
+public class Department {
     private Integer id;
     private String department_name;
 }

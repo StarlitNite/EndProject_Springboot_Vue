@@ -32,7 +32,7 @@ public class JwtUtil {
     public static String CreateJwt(LoginInfo loginInfo){
         JwtBuilder jwtBuilder = Jwts.builder();
         HashMap<String,Object> map = new HashMap<>();
-        map.put("username",loginInfo.getUsername());
+        map.put("userNumber",loginInfo.getSnum());
         map.put("role",loginInfo.getRole_id());
         String jwtToken = jwtBuilder
                 //Header

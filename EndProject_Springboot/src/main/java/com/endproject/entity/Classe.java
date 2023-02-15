@@ -11,5 +11,5 @@ import lombok.Data;
 @TableName("classe")
 public class Classe {
     private Integer id;
-    private String class_name;
+    private String classe_name;
 }

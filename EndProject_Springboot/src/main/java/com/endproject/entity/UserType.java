@@ -14,6 +14,7 @@ import java.util.List;
 public class UserType {
 
     private Integer id;
+    private Integer snum;
     private String username;
     private String password;
     private String family_address;
@@ -21,16 +22,20 @@ public class UserType {
     private String tel;
     private Integer age;
     private String gender;
-    private String classe_id;
     private String counselor_id;
     private String salt;
     private Integer status;
 
 
     private Integer role_id;
-    private String department_id;
+    private Integer classe_id;
+    @TableField(exist = false)
+    private String classe_name;
+    private Integer department_id;
+    @TableField(exist = false)
     private String department_name;
-    private String major_id;
+    private Integer major_id;
+    @TableField(exist = false)
     private String major_name;
 
 

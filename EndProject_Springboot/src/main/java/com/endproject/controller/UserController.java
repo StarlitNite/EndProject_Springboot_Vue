@@ -2,9 +2,18 @@ package com.endproject.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.endproject.Model.dto.LoginInfo;
 import com.endproject.Model.vo.UserVo;
+import com.endproject.entity.Classe;
+import com.endproject.entity.Department;
+import com.endproject.entity.Major;
 import com.endproject.entity.UserType;
+import com.endproject.service.ClasseService;
+import com.endproject.service.DepartmentService;
+import com.endproject.service.MajorService;
 import com.endproject.service.UserService;
 import com.endproject.util.JwtUtil;
 import com.endproject.util.ApiResult;
@@ -12,7 +21,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -29,6 +37,12 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    ClasseService classeService;
+    @Autowired
+    DepartmentService departmentService;
+    @Autowired
+    MajorService majorService;
     /**
      * 前后端联调
      */
@@ -45,7 +59,7 @@ public class UserController {
         log.info("前端消息发过来了:{}", loginInfo);
         //QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
         LambdaQueryWrapper<UserType> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(UserType::getUsername,loginInfo.getUsername())
+        queryWrapper.eq(UserType::getSnum,loginInfo.getSnum())
                     .and(m->m.eq(UserType::getPassword,loginInfo.getPassword()))
                     .and(ms->ms.eq(UserType::getRole_id,loginInfo.getRole_id()));
 
@@ -65,12 +79,34 @@ public class UserController {
     }
 
     @ApiOperation("获取用户")
-    @PostMapping("/get")
+    @GetMapping("/getUser")
     public ApiResult<Object> getUser(UserVo userVo){
-
-
-        return null;
+        IPage<UserType> page = new Page<>(userVo.getPage(),userVo.getLimit());
+        QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(userVo.getUsername()),("username"),userVo.getUsername());
+//        queryWrapper.eq(("Snum"),userVo.getSnum());
+        IPage<UserType> iPage = userService.page(page, queryWrapper);
+        for (UserType userType: iPage.getRecords()){
+            //1.班级名赋值
+            if (userType.getClasse_id()!=null){
+                Classe classe = classeService.getById(userType.getClasse_id());
+                userType.setClasse_name(classe.getClasse_name());
+            }
+            //2.专业名赋值
+            if (userType.getMajor_id()!=null){
+                Major major = majorService.getById(userType.getMajor_id());
+                userType.setMajor_name(major.getMajor());
+            }
+            //3.系名赋值
+            if (userType.getDepartment_id()!=null){
+                Department department = departmentService.getById(userType.getDepartment_id());
+                department.setDepartment_name(department.getDepartment_name());
+            }
+        }
+        return ApiResult.success(iPage);
     }
+
+
 
 
 }

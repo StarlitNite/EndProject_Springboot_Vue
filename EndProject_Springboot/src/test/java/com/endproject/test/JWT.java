@@ -1,3 +1,4 @@
+/*
 package com.endproject.test;
 
 import com.endproject.Model.dto.LoginInfo;
@@ -10,11 +11,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+*/
 /**
  * @author WangNaiLinn
  * @Description:
  * @date create in 2023/1/30 4:55
- */
+ *//*
+
 
 public class JWT {
 
@@ -22,10 +25,12 @@ public class JWT {
 
     private String signature = "WangNaiLinn";//密钥
 
-   /* @Value("${token.expireTime}")
+   */
+/* @Value("${token.expireTime}")
     public void setTime(long time)  {this.expireTime = time;}
     @Value("${token.signature}")
-    public void setSignature(String signature) {this.signature = signature;}*/
+    public void setSignature(String signature) {this.signature = signature;}*//*
+
 
     public void CreateJwt(LoginInfo loginInfo){
         JwtBuilder jwtBuilder = Jwts.builder();
@@ -37,8 +42,10 @@ public class JWT {
                 .setHeaderParam("typ","JWT")
                 .setHeaderParam("alg","HS256")
                 //payload
-                /*.claim("username","WangNaiLinn")
-                .claim("role","admin")*/
+                */
+/*.claim("username","WangNaiLinn")
+                .claim("role","admin")*//*
+
                 .setClaims(map)
                 .setSubject("admin-test")
                 .setExpiration(new Date(System.currentTimeMillis()+expireTime))
@@ -75,3 +82,4 @@ public class JWT {
        CreateJwt(map);
     }
 }
+*/
