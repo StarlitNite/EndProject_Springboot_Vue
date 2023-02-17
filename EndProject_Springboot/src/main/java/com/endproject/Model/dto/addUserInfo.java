@@ -8,9 +8,13 @@ import lombok.Data;
  */
 @Data
 public class addUserInfo {
+    private Integer snum;
     private String username;
     private String password;
-    private String role;
     private String address;
-    private String tel;
+    private Integer role_id;
+    private Integer classe_id ;
+    private Integer major_id;
+    private Integer department_id;
+    private Integer counselor_id;
 }

@@ -1,6 +1,8 @@
 package com.endproject.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.endproject.Model.dto.SupeditUserInfo;
+import com.endproject.Model.dto.addUserInfo;
 import com.endproject.entity.UserType;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,4 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserDao extends BaseMapper<UserType> {
 
+     Boolean addUserByInfo(addUserInfo addUserInfo);
+
+     void editUserById(Integer userId, SupeditUserInfo supeditUserInfo);
 }

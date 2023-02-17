@@ -22,7 +22,6 @@ public class UserType {
     private String tel;
     private Integer age;
     private String gender;
-    private String counselor_id;
     private String salt;
     private Integer status;
 
@@ -37,6 +36,9 @@ public class UserType {
     private Integer major_id;
     @TableField(exist = false)
     private String major_name;
+    private Integer counselor_id;
+    @TableField(exist = false)
+    private String counserlor_name;
 
 
 

@@ -6,15 +6,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.endproject.Model.dto.LoginInfo;
+import com.endproject.Model.dto.SupeditUserInfo;
+import com.endproject.Model.dto.addUserInfo;
 import com.endproject.Model.vo.UserVo;
-import com.endproject.entity.Classe;
-import com.endproject.entity.Department;
-import com.endproject.entity.Major;
-import com.endproject.entity.UserType;
-import com.endproject.service.ClasseService;
-import com.endproject.service.DepartmentService;
-import com.endproject.service.MajorService;
-import com.endproject.service.UserService;
+import com.endproject.entity.*;
+import com.endproject.service.*;
 import com.endproject.util.JwtUtil;
 import com.endproject.util.ApiResult;
 import io.swagger.annotations.Api;
@@ -30,7 +26,7 @@ import java.util.Map;
  * @author 乃王木木
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user/")
 @Slf4j
 @Api(value = "登录接口")
 public class UserController {
@@ -43,6 +39,8 @@ public class UserController {
     DepartmentService departmentService;
     @Autowired
     MajorService majorService;
+    @Autowired
+    CounselorService counselorService;
     /**
      * 前后端联调
      */
@@ -54,7 +52,7 @@ public class UserController {
     **/
 
     @ApiOperation(value = "登录")
-    @GetMapping(value = "/login")
+    @GetMapping(value = "login")
     public ApiResult<Object> login(@RequestBody LoginInfo loginInfo){
         log.info("前端消息发过来了:{}", loginInfo);
         //QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
@@ -79,12 +77,12 @@ public class UserController {
     }
 
     @ApiOperation("获取用户")
-    @GetMapping("/getUser")
+    @GetMapping("getUser")
     public ApiResult<Object> getUser(UserVo userVo){
         IPage<UserType> page = new Page<>(userVo.getPage(),userVo.getLimit());
         QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(userVo.getUsername()),("username"),userVo.getUsername());
-//        queryWrapper.eq(("Snum"),userVo.getSnum());
+        queryWrapper.eq(("Snum"),userVo.getSnum());
         IPage<UserType> iPage = userService.page(page, queryWrapper);
         for (UserType userType: iPage.getRecords()){
             //1.班级名赋值
@@ -102,11 +100,34 @@ public class UserController {
                 Department department = departmentService.getById(userType.getDepartment_id());
                 department.setDepartment_name(department.getDepartment_name());
             }
+            //4.教师名赋值
+            if(userType.getCounselor_id()!=null){
+                Counselor counselor = counselorService.getById(userType.getCounselor_id());
+                counselor.setCounselor_name(counselor.getCounselor_name());
+            }
         }
         return ApiResult.success(iPage);
     }
 
+    @ApiOperation("添加用户")
+    @PostMapping("addUser")
+    public ApiResult<Object> addUser(@RequestBody addUserInfo addUserInfo){
+        userService.addUserByInfo(addUserInfo);
+        return ApiResult.success("添加用户成功");
+    }
 
+    @ApiOperation("超级管理员修改用户")
+    @PostMapping("editUser/{userId}")
+    public ApiResult<Object> editUser(@PathVariable Integer userId,@RequestBody SupeditUserInfo supeditUserInfo){
+        userService.editUserById(userId,supeditUserInfo);
+        return ApiResult.success();
+    }
+    @ApiOperation("学生修改密码")//半成品
+    @PostMapping("editpwd/{userId}")
+    public ApiResult<Object> editpwd(@PathVariable Integer userId,){
+        //userService.stuupdateByid();
+        return null;
+    }
 
 
 }
