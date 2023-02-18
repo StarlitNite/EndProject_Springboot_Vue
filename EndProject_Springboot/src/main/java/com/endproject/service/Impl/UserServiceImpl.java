@@ -28,4 +28,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserType> implements U
     public void editUserById(Integer userId, SupeditUserInfo supeditUserInfo) {
         userDao.editUserById(userId, supeditUserInfo);
     }
+
+    @Override
+    public void stuupdateByid(Integer userId, String password) {
+        userDao.stuupdateByid(userId,password);
+    }
 }

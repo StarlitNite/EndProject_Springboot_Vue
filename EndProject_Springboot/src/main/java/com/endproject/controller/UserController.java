@@ -41,16 +41,13 @@ public class UserController {
     MajorService majorService;
     @Autowired
     CounselorService counselorService;
-    /**
-     * 前后端联调
-     */
+
 
     /**
     * @Description:登录
     * @date 2022/12/23 12:15
     * @author WangNaiLinn
     **/
-
     @ApiOperation(value = "登录")
     @GetMapping(value = "login")
     public ApiResult<Object> login(@RequestBody LoginInfo loginInfo){
@@ -122,12 +119,19 @@ public class UserController {
         userService.editUserById(userId,supeditUserInfo);
         return ApiResult.success();
     }
+
     @ApiOperation("学生修改密码")//半成品
     @PostMapping("editpwd/{userId}")
-    public ApiResult<Object> editpwd(@PathVariable Integer userId,){
-        //userService.stuupdateByid();
-        return null;
+    public ApiResult<Object> editpwd(@PathVariable Integer userId,@RequestBody String password){
+        userService.stuupdateByid(userId,password);
+        return ApiResult.success();
     }
 
+    @ApiOperation("删除用户")
+    @DeleteMapping("delUser/{userId}")
+    public ApiResult<Object> delUser(@PathVariable Integer userId){
+        userService.removeById(userId);
+        return ApiResult.success();
+    }
 
 }

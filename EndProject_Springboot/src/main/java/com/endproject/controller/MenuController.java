@@ -28,8 +28,6 @@ public class MenuController {
     @GetMapping(value = "/Menu")
     public ApiResult<Object> getMenu(Integer role_id){
         List<Menu> menu = menuService.MenuTree(role_id);
-
-
         return ApiResult.success("获取菜单成功",menu);
     }
 

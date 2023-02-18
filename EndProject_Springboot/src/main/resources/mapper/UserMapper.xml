@@ -12,4 +12,8 @@
 
     </update>
 
+    <update id="stuupdateByid">
+        update  user set password=#{password} where id=#{userId}
+    </update>
+
 </mapper>

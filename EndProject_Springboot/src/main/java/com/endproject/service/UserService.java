@@ -14,4 +14,6 @@ public interface UserService extends IService<UserType> {
     void addUserByInfo(addUserInfo addUserInfo);
 
     void editUserById(Integer userId, SupeditUserInfo supeditUserInfo);
+
+    void stuupdateByid(Integer userId, String password);
 }
