@@ -2,6 +2,7 @@ package com.endproject.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+/*import com.endproject.util.ExcelImport;*/
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @TableName("user")
 public class UserType {
+
 
     private Integer id;
     private Integer snum;

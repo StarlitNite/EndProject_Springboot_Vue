@@ -16,10 +16,16 @@ import com.endproject.util.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +34,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user/")
 @Slf4j
-@Api(value = "登录接口")
+@Api(value = "用户接口")
 public class UserController {
 
     @Autowired
@@ -134,4 +140,47 @@ public class UserController {
         return ApiResult.success();
     }
 
+    @ApiOperation("Excel批量导入用户")
+    @PostMapping("ExcelInportUser")
+    public ApiResult<UserType> ExcelInportUser(@RequestParam("file") MultipartFile file) throws Exception{
+        //1.判断文件不能为空
+        if (file.isEmpty()){
+            return  ApiResult.error("文件为空！");
+        }
+        //2.POI获取Excel解析数据
+        HSSFWorkbook wb = new HSSFWorkbook(file.getInputStream());
+        HSSFSheet sheet = wb.getSheetAt(0);
+        //3.定义集合接收文件数据
+        List<UserType> list = new ArrayList<>();
+        HSSFRow row = null;
+        //4.解析数据，装到集合里
+        for (int i = 0;i<sheet.getPhysicalNumberOfRows();i++){
+            //4.1定义实体
+            UserType userType = new UserType();
+            //4.2每一行数据放到实体类中
+            row = sheet.getRow(i);
+            //4.3解析
+            userType.setId((int)row.getCell(0).getNumericCellValue());
+            userType.setSnum((int)row.getCell(1).getNumericCellValue());
+            userType.setUsername(row.getCell(2).getStringCellValue());
+            userType.setPassword(row.getCell(3).getStringCellValue());
+            userType.setFamily_address(row.getCell(4).getStringCellValue());
+            userType.setDorm_address(row.getCell(5).getStringCellValue());
+            userType.setTel(row.getCell(6).getStringCellValue());
+            userType.setAge((int)row.getCell(7).getNumericCellValue());
+            userType.setGender(row.getCell(8).getStringCellValue());
+            userType.setSalt(row.getCell(9).getStringCellValue());
+            userType.setStatus((int)row.getCell(10).getNumericCellValue());
+            userType.setRole_id((int)row.getCell(11).getNumericCellValue());
+            userType.setDepartment_id((int)row.getCell(12).getNumericCellValue());
+            userType.setMajor_id((int)row.getCell(13).getNumericCellValue());
+            userType.setClasse_id((int)row.getCell(14).getNumericCellValue());
+            userType.setCounselor_id((int)row.getCell(14).getNumericCellValue());
+
+            list.add(userType);
+        }
+
+        userService.saveBatch(list);
+        return null;
+    }
 }
