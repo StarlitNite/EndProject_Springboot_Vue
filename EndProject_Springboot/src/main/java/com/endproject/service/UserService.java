@@ -5,6 +5,8 @@ import com.endproject.Model.dto.SupeditUserInfo;
 import com.endproject.Model.dto.addUserInfo;
 import com.endproject.entity.UserType;
 
+import java.util.List;
+
 /**
  * @author WangNaiLinn
  * @Description:
@@ -16,4 +18,6 @@ public interface UserService extends IService<UserType> {
     void editUserById(Integer userId, SupeditUserInfo supeditUserInfo);
 
     void stuupdateByid(Integer userId, String password);
+
+    void saveAll(List<UserType> users);
 }

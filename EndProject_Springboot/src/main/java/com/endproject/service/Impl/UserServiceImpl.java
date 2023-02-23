@@ -9,6 +9,8 @@ import com.endproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author WangNaiLinn
  * @Description:
@@ -32,5 +34,13 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserType> implements U
     @Override
     public void stuupdateByid(Integer userId, String password) {
         userDao.stuupdateByid(userId,password);
+    }
+
+    @Override
+    public void saveAll(List<UserType> users) {
+        for (UserType userType:users){
+            userType.setId(null);
+            userDao.saveAll(userType);
+        }
     }
 }

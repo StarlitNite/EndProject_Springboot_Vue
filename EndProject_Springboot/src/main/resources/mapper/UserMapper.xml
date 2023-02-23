@@ -16,4 +16,8 @@
         update  user set password=#{password} where id=#{userId}
     </update>
 
+    <insert id="saveAll" parameterType="com.endproject.entity.UserType">
+        insert into user values (#{id},#{snum},#{username},#{password},#{gender},#{grade},#{dorm_address},#{tel},#{salt},#{status},#{role_id},#{classe_id},#{department_id},#{major_id},#{counselor_id})
+    </insert>
+
 </mapper>

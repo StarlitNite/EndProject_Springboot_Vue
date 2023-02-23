@@ -1,5 +1,9 @@
 package com.endproject.controller;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,10 +23,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,9 +150,16 @@ public class UserController {
     }
 
     @ApiOperation("Excel批量导入用户")
-    @PostMapping("ExcelInportUser")
+    @PostMapping("ImportUser")
     public ApiResult<UserType> ExcelInportUser(@RequestParam("file") MultipartFile file) throws Exception{
-        //1.判断文件不能为空
+
+
+        ImportParams params = new ImportParams();
+        params.setTitleRows(1);
+        params.setHeadRows(1);
+        List<UserType> users = ExcelImportUtil.importExcel(file.getInputStream(),UserType.class,params);
+        userService.saveAll(users);
+        /*//1.判断文件不能为空
         if (file.isEmpty()){
             return  ApiResult.error("文件为空！");
         }
@@ -161,7 +177,7 @@ public class UserController {
             row = sheet.getRow(i);
             //4.3解析
             userType.setId((int)row.getCell(0).getNumericCellValue());
-            userType.setSnum((int)row.getCell(1).getNumericCellValue());
+            userType.setSnum(row.getCell(1).getStringCellValue());
             userType.setUsername(row.getCell(2).getStringCellValue());
             userType.setPassword(row.getCell(3).getStringCellValue());
             userType.setFamily_address(row.getCell(4).getStringCellValue());
@@ -181,6 +197,24 @@ public class UserController {
         }
 
         userService.saveBatch(list);
-        return null;
+        return null;*/
+        return  null;
     }
+
+    @ApiOperation("导出数据")
+    @GetMapping("ExportUser")
+    public ApiResult<Object> ExportUser(HttpServletResponse response) throws IOException {
+        //查询所有数据
+        List<UserType> userTypes = userService.list();
+        //生存Excel
+        Workbook wb = ExcelExportUtil.exportExcel(new ExportParams("用户信息表","用户信息"),UserType.class,userTypes);
+        response.setHeader("Content-Disposition","attachment;fileName="+ URLEncoder.encode("用户列表.xls","UTF-8"));
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        wb.write(servletOutputStream);
+        servletOutputStream.close();
+        wb.close();
+        return ApiResult.success();
+    }
+
+
 }
