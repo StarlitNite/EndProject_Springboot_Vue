@@ -64,7 +64,7 @@ public class UserController {
     * @author WangNaiLinn
     **/
     @ApiOperation(value = "登录")
-    @GetMapping(value = "login")
+    @PostMapping(value = "login")
     public ApiResult<Object> login(@RequestBody LoginInfo loginInfo){
         log.info("前端消息发过来了:{}", loginInfo);
         //QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();

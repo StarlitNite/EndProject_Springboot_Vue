@@ -1,12 +1,11 @@
 package com.endproject.util;
 
 import com.endproject.Model.dto.LoginInfo;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -52,4 +51,14 @@ public class JwtUtil {
         /*System.out.println(jwtToken);*/
         return jwtToken;
     }
+
+    public static Object parse(String token){
+
+        JwtParser jwtParser = Jwts.parser();
+        Jws<Claims> claimsJws = jwtParser.setSigningKey(signature).parseClaimsJws(token);
+        Claims claims = claimsJws.getBody();
+        Object role_id = claims.get("role");
+        return role_id;
+    }
+
 }

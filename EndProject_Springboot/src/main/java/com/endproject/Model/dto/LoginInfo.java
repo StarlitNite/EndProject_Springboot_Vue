@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class LoginInfo {
-    private Integer snum;
+    private String snum;
     private String password;
     private Integer role_id;
 

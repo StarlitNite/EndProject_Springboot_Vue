@@ -77,6 +77,13 @@
             <version>1.6.11</version>
         </dependency>-->
 
+        <!--shiro-->
+        <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-all</artifactId>
+        <version>1.4.2</version>
+        </dependency>
+
         <!--druid-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -171,6 +178,12 @@
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-base</artifactId>
             <version>4.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-lang3</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.afterturn</groupId>
