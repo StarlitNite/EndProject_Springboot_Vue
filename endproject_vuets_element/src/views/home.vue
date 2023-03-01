@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="200px" height="100%">
         <el-col :span="12">
         <h5 class="mb-2">Custom colors</h5>
         <el-menu
@@ -13,12 +13,18 @@
             :unique-opened="true"
             :router="true"
         >
-          <el-sub-menu :index="menu.id+''" v-for="menu in Menus " :key="menu.id">
+          <template  v-for="menu in Menus ">
+
+          <el-sub-menu v-if="menu.child.length"  :index="menu.id+''" :key="menu.id" >
             <template #title>
-              <span>{{ menu.title }}</span>
+              {{ menu.title }}
             </template>
             <el-menu-item :index="'/'+submenu.path" v-for="submenu in menu.child" :key="submenu.id">{{ submenu.title }}</el-menu-item>
           </el-sub-menu>
+          <el-menu-item v-else :index="'/'+menu.path" :key="menu.key">
+            {{ menu.title }}
+          </el-menu-item>
+          </template>
         </el-menu>
       </el-col></el-aside>
       <el-container>

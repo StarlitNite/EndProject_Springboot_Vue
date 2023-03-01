@@ -8,6 +8,7 @@
 
 <style lang="less">
 @import url("./assets/styles/rebase.less");
+
 html,
 body{
   height: 100%;
