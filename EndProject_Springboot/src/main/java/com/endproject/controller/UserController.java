@@ -81,8 +81,8 @@ public class UserController {
         Map<String,Object> map = new HashMap<>();
         //Jwt身份权限
         String Jwt = JwtUtil.CreateJwt(loginInfo);
-        map.put("user",userType.getUsername());
-        map.put("role",userType.getRole_id());
+        map.put("userName",userType.getUsername());
+        map.put("role_id",userType.getRole_id());
         map.put("token",Jwt);
         System.out.println(map);
         return ApiResult.success("登录成功",map);

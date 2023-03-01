@@ -52,6 +52,12 @@ public class JwtUtil {
         return jwtToken;
     }
 
+    /**
+    * @Description:Token解析
+    * @date 2023/2/26 15:59
+    * @author WangNaiLinn
+    **/
+
     public static Object parse(String token){
 
         JwtParser jwtParser = Jwts.parser();

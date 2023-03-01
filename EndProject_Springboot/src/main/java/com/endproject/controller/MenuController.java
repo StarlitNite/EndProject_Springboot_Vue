@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.endproject.entity.Menu;
 import com.endproject.service.MenuService;
 import com.endproject.util.ApiResult;
+import com.endproject.util.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -26,8 +28,10 @@ public class MenuController {
 
     @ApiOperation("获取菜单")
     @GetMapping(value = "/Menu")
-    public ApiResult<Object> getMenu(Integer role_id){
-        List<Menu> menu = menuService.MenuTree(role_id);
+    public ApiResult<Object> getMenu(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Object role_id = JwtUtil.parse(token);
+        List<Menu> menu = menuService.MenuTree((Integer) role_id);
         return ApiResult.success("获取菜单成功",menu);
     }
 

@@ -26,7 +26,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
-
+        queryWrapper.eq("role_id",token.getPrincipal().toString());
 
         return null;
     }
