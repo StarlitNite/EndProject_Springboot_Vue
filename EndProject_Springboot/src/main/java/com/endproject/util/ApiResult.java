@@ -32,15 +32,15 @@ public class ApiResult<T> implements Serializable {
     /**
      * 每页显示数量
      */
-    private int pageSize;
+    //private int pageSize;
     /**
      * 当前页
      */
-    private int current;
+    //private int current;
     /**
      * 总页数
      */
-    private int total;
+    //private int total;
     public ApiResult() {
     }
     public ApiResult(Integer code, String message) {
@@ -149,7 +149,7 @@ public class ApiResult<T> implements Serializable {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
-    public int getPageSize() {
+    /*public int getPageSize() {
         return pageSize;
     }
     public void setPageSize(int pageSize) {
@@ -167,6 +167,6 @@ public class ApiResult<T> implements Serializable {
     public void setTotal(int total) {
         this.total = total;
     }
-
+*/
 
 }

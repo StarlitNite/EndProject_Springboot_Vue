@@ -24,9 +24,19 @@ interface UserMenu{
     menus:[]
 }
 
+//权限接口
+interface role{
+    name:string
+    Page:number
+    limit:number
+}
 
 
+//登录
 export const adminLogin =(data:adminLoginData):PromiseRes<AdminLoginRes> =>request.post('/user/login',data)
 
 //获取登录用户权限菜单
-export const getMenu=():PromiseRes<UserMenu>=>request.get('/Menu')
+export const getMenu=():PromiseRes<UserMenu>=>request.get('/menu/Menu')
+
+//获取权限列表
+export const gerRole=(data:role):PromiseRes<{ list:{}[] }>=>request.get('/role/getRole',{params:data})

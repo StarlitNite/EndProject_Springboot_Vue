@@ -30,6 +30,8 @@ const router = createRouter({
     routes//路由配置
 })
 const modules = import.meta.glob('../views/**/**.vue')
+//获取菜单
+
 const getRoutes = ()=>{
     //动态添加菜单
     router.addRoute({
@@ -58,37 +60,32 @@ const getRoutes = ()=>{
             component:()=> import('../views/home.vue'),
             children:[]
         };
-        /*console.log(newRoutes)
-        console.log(Menus[key].child.length)*/
-        //仅有一级菜单
+        /*仅有一级菜单  但直接跳转的原因是没在以home页面为基础页面的情况下
+        但切换为二级菜单时，会因为只有一级菜单导致只显示home，因为child是空的
+        所以需要在只有一级菜单时将一级菜单再重新赋给二级菜单*/
         if (Menus[key].child.length==0){
-            console.log(Menus[key].path)
-            router.addRoute({
+            newRoutes.children?.push({
                 path:'/'+Menus[key].path,
                 name:Menus[key].path,
                 component:modules['../views/'+Menus[key].path+'/'+Menus[key].path+'.vue']
             })
+            //动态添加路由规则
+            router.addRoute(newRoutes)
+        }else {
+            // @ts-ignore
+            for (let i = 0;i<Menus[key].child.length; i++){
 
+                newRoutes.children?.push({
+                    path:'/'+Menus[key].child[i].path,
+                    name:Menus[key].child[i].path,
+                    component:modules['../views/'+Menus[key].path+'/'+Menus[key].child[i].path+'.vue']
+                })
+                //动态添加路由规则
+                router.addRoute(newRoutes)
+            }
         }
-        // @ts-ignore
-        for (let i = 0;i<Menus[key].child.length; i++){
-            console.log(i);
-            newRoutes.children?.push({
-                path:'/'+Menus[key].child[i].path,
-                name:Menus[key].child[i].path,
-                component:modules['../views/'+Menus[key].path+'/'+Menus[key].child[i].path+'.vue']
-            })
-        }
-
-
-        //动态添加固定首页
-        console.log(newRoutes)
-        //动态添加路由规则
-        router.addRoute(newRoutes)
-        /*console.log(router)*/
     }
 }
-
 //前置导航守卫
 router.beforeEach((to,from,next)=>{
 

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.endproject.Model.vo.RoleMenuOut;
 import com.endproject.Model.vo.RoleVo;
+import com.endproject.dao.RoleDao;
 import com.endproject.entity.Role;
 import com.endproject.service.RoleMenuService;
 import com.endproject.service.RoleService;
@@ -25,6 +26,7 @@ import java.util.List;
  * @date create in 2023/2/5 17:07
  */
 @RestController
+@RequestMapping("/role/")
 @Slf4j
 @Api("权限接口")
 public class RoleController {
@@ -34,16 +36,18 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    RoleDao roleDao;
+
     /**
-    * @Description:
+    * @Description: 这个人，有什么权限，都能做什么
     * @date 2023/2/6 17:59
     * @author WangNaiLinn
     **/
     @ApiOperation("获取权限")
-    @GetMapping("/Role/{rid}")
+    @GetMapping("Role/{rid}")
     public ApiResult<Object> getRole(@PathVariable(value = "rid") Integer rid){
         List<RoleMenuOut> Role = roleMenuService.getRole(rid);
-
         return ApiResult.success(Role);
     }
 
@@ -54,7 +58,7 @@ public class RoleController {
     **/
     
     @ApiOperation("权限变动")
-    @PostMapping("/SaveRole")
+    @PostMapping("SaveRole")
     @ResponseBody
     public ApiResult<Object> SaveRole(@Param("rid") Integer rid,@Param("mids") Integer[] mids){
         //1.删除rid对应权限
@@ -80,33 +84,36 @@ public class RoleController {
     **/
 
     @ApiOperation("查询角色")
-    @GetMapping("/getRole")
+    @GetMapping("getRole")
     public ApiResult<Object> getRole(RoleVo roleVo){
-        IPage<Role> page = new Page<>(roleVo.getPage(),roleVo.getLimit());
+        Page<Role> page = new Page<>(roleVo.getPage(),roleVo.getLimit());
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(roleVo.getName()),"name",roleVo.getName());
         queryWrapper.like(StringUtils.isNotBlank(roleVo.getRemark()),"remark",roleVo.getRemark());
-        IPage<Role> page1 = roleService.page(page, queryWrapper);
+        /*List<Role> list = roleService.list();
+        System.out.println(list);*/
+        IPage<Role> page1 = roleService.page(page,queryWrapper);
+
 
         return ApiResult.success("获取角色成功",page1);
     }
 
     @ApiOperation("添加角色")
-    @PostMapping("/addRole")
+    @PostMapping("addRole")
     public ApiResult<Object> addRole(Role role){
         roleService.save(role);
         return ApiResult.success("添加角色成功");
     }
 
     @ApiOperation("删除角色")
-    @DeleteMapping("/DeletRole")
+    @DeleteMapping("DeletRole")
     public ApiResult<Object> DeleteRole(Role role){
         roleService.removeById(role.getId());
         return ApiResult.success("删除角色成功");
     }
 
     @ApiOperation("修改角色")
-    @PostMapping("/UpdateRole")
+    @PostMapping("UpdateRole")
     public ApiResult<Object> UpdateRole(Role role){
         roleService.saveOrUpdate(role);
         return ApiResult.success("修改角色成功");

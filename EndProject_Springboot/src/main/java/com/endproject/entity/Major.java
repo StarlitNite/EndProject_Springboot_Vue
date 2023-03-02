@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class Major {
-    private Integer major_id;
+    private Integer id;
     private String major;
     private Integer department_id;
 }

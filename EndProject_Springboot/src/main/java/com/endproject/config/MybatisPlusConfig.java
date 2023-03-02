@@ -8,18 +8,18 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author WangNaiLinn
- * @Description:分页插件
+ * @Description: 分页插件配置类
  * @date create in 2023/2/21 1:31
  */
 @Configuration
 public class MybatisPlusConfig {
-
     @Bean
-    public MybatisPlusInterceptor paginationInterceptor() {
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 指定数据库方言为 MYSQL
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
+        paginationInnerInterceptor.setDbType(DbType.MYSQL);
+        paginationInnerInterceptor.setOverflow(true);
+        interceptor.addInnerInterceptor(paginationInnerInterceptor);
         return interceptor;
     }
-
 }

@@ -41,17 +41,24 @@ public class UserType implements Serializable {
 
     private Integer role_id;
     private Integer classe_id;
+
     @TableField(exist = false)
     private String classe_name;
+
     private Integer department_id;
+
     @TableField(exist = false)
     private String department_name;
+
     private Integer major_id;
+
     @TableField(exist = false)
     private String major_name;
+
     private Integer counselor_id;
+
     @TableField(exist = false)
-    private String counserlor_name;
+    private String counselor_name;
 
 
 

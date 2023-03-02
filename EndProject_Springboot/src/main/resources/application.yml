@@ -38,7 +38,9 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     #驼峰命名转换
     map-underscore-to-camel-case: false
-
+logging:
+  level:
+    com.xingyiclinic.clinic.mapper: DEBUG
 token:
   signature: WangNaiLinn
   expireTime: 1800000

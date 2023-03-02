@@ -94,7 +94,7 @@ public class UserController {
         IPage<UserType> page = new Page<>(userVo.getPage(),userVo.getLimit());
         QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(userVo.getUsername()),("username"),userVo.getUsername());
-        queryWrapper.eq(("Snum"),userVo.getSnum());
+        queryWrapper.eq(StringUtils.isNotBlank(userVo.getSnum()),("snum"),userVo.getSnum());
         IPage<UserType> iPage = userService.page(page, queryWrapper);
         for (UserType userType: iPage.getRecords()){
             //1.班级名赋值
@@ -110,12 +110,12 @@ public class UserController {
             //3.系名赋值
             if (userType.getDepartment_id()!=null){
                 Department department = departmentService.getById(userType.getDepartment_id());
-                department.setDepartment_name(department.getDepartment_name());
+                userType.setDepartment_name(department.getDepartment_name());
             }
             //4.教师名赋值
             if(userType.getCounselor_id()!=null){
                 Counselor counselor = counselorService.getById(userType.getCounselor_id());
-                counselor.setCounselor_name(counselor.getCounselor_name());
+                userType.setCounselor_name(counselor.getCounselor_name());
             }
         }
         return ApiResult.success(iPage);
