@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.endproject.dao.LeaveDao">
+
+    <select id="getLeaveByAdmin" resultType="com.endproject.Model.vo.LeaveVo">
+        select * from approval_process
+    </select>
+
+    <select id="getLeaveByCou" resultType="com.endproject.entity.Leave">
+        SELECT a.id,a.snum,a.reason,a.address,a.`day`,a.phone,a.node_status,a.create_time,a.update_time FROM approval_process as a
+        LEFT JOIN `user` ON `user`.snum = a.snum WHERE `user`.counselor_id=
+         (SELECT counselor.id FROM counselor LEFT JOIN `user` ON `user`.snum = counselor.cnum WHERE snum=#{snum})
+    </select>
+
+    <select id="getLeaveByStu" resultType="com.endproject.Model.vo.LeaveVo">
+        SELECT a.id,a.snum,a.reason,a.address,a.`day`,a.phone,a.node_status,a.create_time,a.update_time FROM approval_process as a
+        LEFT JOIN `user` ON`user`.snum = a.snum WHERE user.snum = #{snum}
+    </select>
+</mapper>

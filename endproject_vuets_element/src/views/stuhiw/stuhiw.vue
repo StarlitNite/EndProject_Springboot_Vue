@@ -1,5 +1,5 @@
 <template>
-  leave
+  stuhiw
 </template>
 
 <script lang="ts" setup>

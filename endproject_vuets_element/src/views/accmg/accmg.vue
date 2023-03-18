@@ -12,39 +12,38 @@
       </template>
     </el-table-column>
   </el-table>
-  <UpdateDialog :visible="visible" @click="closeDialog" :form="rowData"/>
+  <UpdateDialog :visible="visible" @close="closeDialog" :form="rowData"/>
 </template>
 
 <script lang="ts" setup>
 /*引入*/
 import {reactive, toRefs, ref, watch} from 'vue'
-import {gerRole} from '../../request/api'
+import {getRole} from '../../request/api'
 import UpdateDialog from '../../components/UpdateDialog.vue'
 
 
 const state = reactive<{
-  tableData:{}[],
+  tableData:{}[],//{}指的是对象类型
   visible:boolean,
-  rowData:{}
+  rowData:Role
 }>({
   tableData:[],
   visible:false,
   rowData:{}
 })
 const {tableData, visible ,rowData} = toRefs(state)
-gerRole({
+getRole({
   name:'',
   Page:5,
   limit:5
 }).then(res=>{
-  if (res.code){
+  if (res.code===200){
     tableData.value = res.result.records
   }
 })
 
 //点击编辑按钮
 const UpdateRole = (row:{}) =>{
-  console.log(visible.value)
   visible.value = true;
   rowData.value = row;
 }
@@ -52,10 +51,27 @@ const UpdateRole = (row:{}) =>{
 
 
 //隐藏Dialog
-const closeDialog = ()=>{
+const closeDialog = (r?:'reload')=>{//问号是可选属性
   visible.value = false;
+  rowData.value = {};//清空编辑框
+  if (r==='reload'){
+    getRole({
+      name:'',
+      Page:5,
+      limit:5
+    }).then(res=>{
+      if (res.code===200){
+        tableData.value = res.result.records
+      }
+    })
+  }
 }
-
+/*watch(
+    ()=>visible.value,(newVal,oldVal)=>{
+      console.log('new',newVal)
+      console.log('old',oldVal)
+    }
+)*/
 </script>
 
 <style scoped>

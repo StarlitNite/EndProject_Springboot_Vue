@@ -38,8 +38,6 @@ public class JwtUtil {
                 .setHeaderParam("typ","JWT")
                 .setHeaderParam("alg","HS256")
                 //payload
-                /*.claim("username","WangNaiLinn")
-                .claim("role","admin")*/
                 .setClaims(map)
                 .setSubject("admin-test")
                 .setExpiration(new Date(System.currentTimeMillis()+expireTime))
@@ -64,6 +62,7 @@ public class JwtUtil {
         Jws<Claims> claimsJws = jwtParser.setSigningKey(signature).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
         Object role_id = claims.get("role");
+        Object snum = claims.get("snum");
         return role_id;
     }
 

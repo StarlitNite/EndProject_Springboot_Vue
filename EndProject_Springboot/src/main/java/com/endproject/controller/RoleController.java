@@ -40,7 +40,7 @@ public class RoleController {
     RoleDao roleDao;
 
     /**
-    * @Description: 这个人，有什么权限，都能做什么
+    * @Description: 权限管理  分配权限前置接口
     * @date 2023/2/6 17:59
     * @author WangNaiLinn
     **/
@@ -52,7 +52,7 @@ public class RoleController {
     }
 
     /**
-    * @Description: 前端传 rid+data(mids)  后台查询到rid对应权限，删除再添加
+    * @Description: 权限管理 分配权限后置接口
     * @date 2023/2/11 21:23
     * @author WangNaiLinn
     **/
@@ -108,6 +108,7 @@ public class RoleController {
     @ApiOperation("删除角色")
     @DeleteMapping("DeletRole")
     public ApiResult<Object> DeleteRole(Role role){
+
         roleService.removeById(role.getId());
         return ApiResult.success("删除角色成功");
     }
@@ -115,6 +116,7 @@ public class RoleController {
     @ApiOperation("修改角色")
     @PostMapping("UpdateRole")
     public ApiResult<Object> UpdateRole(Role role){
+        System.out.println(role);
         roleService.saveOrUpdate(role);
         return ApiResult.success("修改角色成功");
     }

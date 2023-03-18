@@ -3,7 +3,6 @@
       ref="ruleFormRef"
       :model="ruleForm"
       :rules="rules"
-
       class="demo-ruleForm"
   >
     <el-form-item label="学(工)号" prop="snum">
@@ -34,9 +33,9 @@ import {useStore} from "vuex";
 
 const state = reactive({
   ruleForm:{
-    snum:'19001020609',
+    snum:'19027355608',//admin1
     password:'888',
-    role_id:'1'
+    role_id:'2'
   },
 
 })
@@ -81,6 +80,7 @@ const Login=() => {
         Cookie.set('token',res.result.token)
         Cookie.set('userName',res.result.userName)
         Cookie.set('role_id',res.result.role_id)
+        Cookie.set('snum',res.result.snum)
         //获取菜单
         store.dispatch('getMenu').then(res=>{
           router.push('/home')

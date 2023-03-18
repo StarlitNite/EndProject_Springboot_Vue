@@ -56,6 +56,8 @@ public class UserController {
     MajorService majorService;
     @Autowired
     CounselorService counselorService;
+    @Autowired
+    RoleService roleService;
 
 
     /**
@@ -66,7 +68,6 @@ public class UserController {
     @ApiOperation(value = "登录")
     @PostMapping(value = "login")
     public ApiResult<Object> login(@RequestBody LoginInfo loginInfo){
-        log.info("前端消息发过来了:{}", loginInfo);
         //QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
         LambdaQueryWrapper<UserType> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserType::getSnum,loginInfo.getSnum())
@@ -83,6 +84,7 @@ public class UserController {
         String Jwt = JwtUtil.CreateJwt(loginInfo);
         map.put("userName",userType.getUsername());
         map.put("role_id",userType.getRole_id());
+        map.put("snum",userType.getSnum());
         map.put("token",Jwt);
         System.out.println(map);
         return ApiResult.success("登录成功",map);
@@ -91,12 +93,17 @@ public class UserController {
     @ApiOperation("获取用户")
     @GetMapping("getUser")
     public ApiResult<Object> getUser(UserVo userVo){
-        IPage<UserType> page = new Page<>(userVo.getPage(),userVo.getLimit());
+        IPage<UserType> page = new Page<>(userVo.getPage(),userVo.getLimit());//添加页数限制
         QueryWrapper<UserType> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(userVo.getUsername()),("username"),userVo.getUsername());
         queryWrapper.eq(StringUtils.isNotBlank(userVo.getSnum()),("snum"),userVo.getSnum());
-        IPage<UserType> iPage = userService.page(page, queryWrapper);
+        IPage<UserType> iPage = userService.page(page, queryWrapper);//放入页数和搜索条件
         for (UserType userType: iPage.getRecords()){
+            //0.权限名赋值
+            if (userType.getRole_id()!=null){
+                Role role = roleService.getById(userType.getRole_id());
+                userType.setRole_name(role.getName());
+            }
             //1.班级名赋值
             if (userType.getClasse_id()!=null){
                 Classe classe = classeService.getById(userType.getClasse_id());
@@ -152,11 +159,9 @@ public class UserController {
     @ApiOperation("Excel批量导入用户")
     @PostMapping("ImportUser")
     public ApiResult<UserType> ExcelInportUser(@RequestParam("file") MultipartFile file) throws Exception{
-
-
         ImportParams params = new ImportParams();
-        params.setTitleRows(1);
-        params.setHeadRows(1);
+        params.setTitleRows(0);
+        params.setHeadRows(3);
         List<UserType> users = ExcelImportUtil.importExcel(file.getInputStream(),UserType.class,params);
         userService.saveAll(users);
         /*//1.判断文件不能为空
@@ -198,7 +203,7 @@ public class UserController {
 
         userService.saveBatch(list);
         return null;*/
-        return  null;
+        return  ApiResult.success("导入成功");
     }
 
     @ApiOperation("导出数据")

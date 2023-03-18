@@ -5,7 +5,7 @@ interface adminLoginData{
     "password":string
     "role_id":number
 }
-type PromiseRes<T> = Promise<ManageResult<T>>
+type PromiseRes<T={}> = Promise<ManageResult<T>>
 
 interface ManageResult<T={}>{
     code:number
@@ -18,17 +18,32 @@ interface AdminLoginRes{
     token:string
     userName:string
     role_id:number
+    snum:string
 }
 
 interface UserMenu{
     menus:[]
 }
 
+interface user{
+    snum:string;
+    Page:number;
+    limit:number;
+}
+
 //权限接口
 interface role{
-    name:string
-    Page:number
-    limit:number
+    name:string;
+    Page:number;
+    limit:number;
+}
+
+//获取请假列表接口
+interface leave{
+    role_id:number;
+    snum:string | undefined;
+    Page:number;
+    limit:number;
 }
 
 
@@ -38,5 +53,26 @@ export const adminLogin =(data:adminLoginData):PromiseRes<AdminLoginRes> =>reque
 //获取登录用户权限菜单
 export const getMenu=():PromiseRes<UserMenu>=>request.get('/menu/Menu')
 
+//获取用户
+export const getUser=(data:user):PromiseRes<{list:{}[]}> =>request.get('/user/getUser',{params:data})
+
+//修改用户
+export const editUser=(data:user):PromiseRes => request.post('/user/editUser',data)
+
 //获取权限列表
-export const gerRole=(data:role):PromiseRes<{ list:{}[] }>=>request.get('/role/getRole',{params:data})
+export const getRole=(data:role):PromiseRes<{ list:{}[] }>=>request.get('/role/getRole',{params:data})
+
+//修改角色 (有问题，前端传值为空）
+export const UpdateRole=(data:Role):PromiseRes =>request.post('/role/UpdateRole',data)
+
+//获取角色权限
+export const getRoldById=(id:number):PromiseRes<{list:{}[]}> => request.get('/role/Role'+id)
+
+//删除角色
+/*export const DeleteRole=(data:Role)=>request.delete('/role/DeleteRole',data.id)*/
+
+//获取请假列表API
+export const getleave=(data:leave):PromiseRes<{list:{}[]}> => request.get('/leave/getleave',{params:data})
+
+//审批通过返回接口
+export const updateleave=(data:leave):PromiseRes => request.post('/leave/updateleave',data)
