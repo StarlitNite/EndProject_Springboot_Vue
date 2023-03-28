@@ -20,4 +20,8 @@
         insert into user values (#{id},#{snum},#{username},#{password},#{gender},#{grade},#{dorm_address},#{tel},#{salt},#{status},#{role_id},#{classe_id},#{department_id},#{major_id},#{counselor_id})
     </insert>
 
+    <update id="ZeroHealthStatus">
+        update user set health_status = 0
+    </update>
+
 </mapper>

@@ -1,4 +1,5 @@
 interface leave{
+    id:number
     snum:string;
     reason:string;
     address:string;

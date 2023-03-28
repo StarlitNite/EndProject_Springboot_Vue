@@ -19,4 +19,6 @@ public interface UserDao extends BaseMapper<UserType> {
      void stuupdateByid(Integer userId, String password);
 
     void saveAll(UserType userType);
+
+    void ZeroHealthStatus();
 }

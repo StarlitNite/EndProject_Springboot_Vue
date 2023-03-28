@@ -1,6 +1,7 @@
 package com.endproject.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+
 public enum ApprovalEnumStatus {
 
     NO_SUBMIT(0,"未提交"),
@@ -21,4 +23,9 @@ public enum ApprovalEnumStatus {
 
     private Integer code;
     private String desc;
+
+
+    public int getCode(){
+        return code;
+    }
 }

@@ -76,3 +76,21 @@ export const getleave=(data:leave):PromiseRes<{list:{}[]}> => request.get('/leav
 
 //审批通过返回接口
 export const updateleave=(data:leave):PromiseRes => request.post('/leave/updateleave',data)
+
+//创建请假
+export const addleave=(data:leave):PromiseRes => request.post('/leave/addleave',data)
+
+//删除请假
+export const delleave=(id:number):PromiseRes => request.post('/leave/delleave/'+id)
+
+//查询填报
+export const gethealth=(data:health):PromiseRes<{list:{}[]}> => request.get('/health/gethealth',{params:data})
+
+//创建填报
+export const addhealth=(data:health):PromiseRes => request.post('/health/addhealthclock',data)
+
+//修改填报
+export const updatehealthclock=(data:health):PromiseRes => request.post('/health/updatehealthclock',data)
+
+//填报无法自主删除
+

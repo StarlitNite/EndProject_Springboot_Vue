@@ -25,7 +25,10 @@ const props = defineProps<{
   visible:boolean;
   form:Role
 }>()
-const state = reactive <{formLabelWidth:string; newForm:Role}> ({
+const state = reactive <{
+  formLabelWidth:string;
+  newForm:Role
+}> ({
   formLabelWidth:'120px',
   newForm: {}
 })
@@ -44,7 +47,6 @@ const close = (r?: 'reload') =>{
 }
 //点击确定
 const modify = ()=>{
-
   UpdateRole(newForm.value).then(res =>{
     if (res.code === 200){
       console.log("--------------")

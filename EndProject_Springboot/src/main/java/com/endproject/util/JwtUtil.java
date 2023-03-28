@@ -59,6 +59,7 @@ public class JwtUtil {
     public static Object parse(String token){
 
         JwtParser jwtParser = Jwts.parser();
+        System.out.println(expireTime);
         Jws<Claims> claimsJws = jwtParser.setSigningKey(signature).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
         Object role_id = claims.get("role");

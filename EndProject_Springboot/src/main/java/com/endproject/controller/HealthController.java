@@ -5,18 +5,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.endproject.Model.vo.HealthVo;
-import com.endproject.entity.HealthClock;
 import com.endproject.entity.UserType;
+import com.endproject.entity.Health;
 import com.endproject.service.HealthClockService;
 import com.endproject.util.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,12 +38,12 @@ public class HealthController {
     * @author WangNaiLinn
     **/
 
-    @ApiOperation("学生查询填报")
+   /* @ApiOperation("学生查询填报")
     @GetMapping("gethealthstu")
     public ApiResult<Object> getHealthByStu(String snum){
         //List<HealthClock> list = healthClockService.getHealthByStu(snum);
         return ApiResult.success("获取成功",list);
-    }
+    }*/
 
     /**
     * @Description: 还是一样，用教职工号查询到导员id再去查询对应id的学生的填报
@@ -57,24 +54,23 @@ public class HealthController {
     @ApiOperation("查询填报")
     @GetMapping("gethealth")
     public ApiResult<Object> getHealth(UserType userType, HealthVo healthVo){
-        IPage<HealthClock> page = new Page<>(healthVo.getPage(),healthVo.getLimit());
-        QueryWrapper<HealthClock> queryWrapper = new QueryWrapper<>();
+        IPage<Health> page = new Page<>(healthVo.getPage(),healthVo.getLimit());
+        QueryWrapper<Health> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(StringUtils.isNotBlank(healthVo.getSnum()),("snum"),healthVo.getSnum());
         Integer role_id = userType.getRole_id();
+
         Map<String,Object> map = new HashMap<>();
         if (role_id==1){
-           IPage<HealthClock> iPage = healthClockService.page(page,queryWrapper);
+           IPage<Health> iPage = healthClockService.page(page,queryWrapper);
            return ApiResult.success(iPage);
         }else if (role_id==2){
-            try {
                 map.put("Healths",healthClockService.getHealthByCou(userType.getSnum(),healthVo.getPage(),healthVo.getLimit()));
                 map.put("totalHealth",healthClockService.count());
                 map.put("totalPage",Math.ceil(healthClockService.count()/healthVo.getLimit()));
                 map.put("pageSize",healthVo.getLimit());
                 map.put("currentPage",healthVo.getPage());
-            }finally {
+                System.out.println(map);
                 return ApiResult.success("获取学生填报信息成功",map);
-            }
         }else if (role_id==3){
 
             try {
@@ -84,7 +80,7 @@ public class HealthController {
                 map.put("pageSize",healthVo.getLimit());
                 map.put("currentPage",healthVo.getPage());
             }finally {
-                return ApiResult.success("获取学生填报信息成功",map);
+                return ApiResult.success("获取填报信息成功",map);
             }
 
         }
@@ -93,12 +89,13 @@ public class HealthController {
 
     @ApiOperation("创建填报")
     @PostMapping("addhealthclock")
-    public ApiResult<Object> addhealthclock(HealthClock healthClock){
-
-        if (healthClockService.check(healthClock.getSnum(),healthClock.getCreate_time())){
+    public ApiResult<Object> addhealthclock(@RequestBody Health health){
+        System.out.println(health);
+        if (healthClockService.check(health.getSnum(),health.getCreate_time())){
             return ApiResult.error("今日已填报，请勿重复填报");
         }else {
-            healthClockService.save(healthClock);
+            healthClockService.save(health);
+            return ApiResult.success("填报完成");
         }
         /*如果当天已存在，无法重复创建，但可修改  error:今日已提交 if（time == dd） return error
         * 判断当前snum最新的一条数据和当前添加数据的时间，如果是同一天则返回false  添加失败，如是修改则不需此思路\
@@ -107,21 +104,20 @@ public class HealthController {
         * select * from health_clock where snum = #{snum} and
         * 如何传递今天的时间，前端传递？
         * SELECT count(*) FROM health_clock WHERE TO_DAYS(create_time) = TO_DAYS(NOW()) AND snum = #{}  */
-        return ApiResult.success("填报完成");
+
     }
 
     @ApiOperation("修改填报")
     @PostMapping("updatehealthclock")
-    public ApiResult<Object> updateHealthClockByStu(HealthClock healthClock){
-
-        healthClockService.updateById(healthClock);
+    public ApiResult<Object> updateHealthClockByStu(@RequestBody Health health){
+        healthClockService.updateById(health);
         return ApiResult.success("修改成功");
     }
 
     @ApiOperation("删除填报")
     @PostMapping("deletehealthclock")
-    public ApiResult<Object> deleteHealthClockByStu(HealthClock healthClock){
-        healthClockService.removeById(healthClock.getId());
+    public ApiResult<Object> deleteHealthClockByStu(Health health){
+        healthClockService.removeById(health.getId());
         return ApiResult.success("删除成功");
     }
 }

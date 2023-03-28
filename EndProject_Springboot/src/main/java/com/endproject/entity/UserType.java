@@ -36,6 +36,7 @@ public class UserType implements Serializable {
     private String tel;
     private String salt;
     private Integer status;
+    private Integer health_status;
     private Integer nstu;
 
 

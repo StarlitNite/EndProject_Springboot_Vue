@@ -1,6 +1,6 @@
 package com.endproject.Model.vo;
 
-import com.endproject.entity.HealthClock;
+import com.endproject.entity.Health;
 import lombok.Data;
 
 /**
@@ -9,7 +9,7 @@ import lombok.Data;
  * @date create in 2023/3/18 17:55
  */
 @Data
-public class HealthVo extends HealthClock {
+public class HealthVo extends Health {
     private Integer Page;
     private Integer Limit;
 }

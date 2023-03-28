@@ -1,8 +1,9 @@
 package com.endproject.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.endproject.entity.HealthClock;
+import com.endproject.entity.Health;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.List;
  * @date create in 2023/3/17 16:23
  */
 @Mapper
-public interface HealthClockDao extends BaseMapper<HealthClock> {
+public interface HealthClockDao extends BaseMapper<Health> {
 
-    List<HealthClock> getHealthByStu(String snum,Integer Page,Integer Limit);
+    List<Health> getHealthByStu(@Param("snum") String snum, @Param("page") Integer page, @Param("limit") Integer limit);
 
-    boolean check(String snum, Date create_time);
+    boolean check(@Param("snum")String snum,@Param("create_time") Date create_time);
+
+    List<Health> getHealthByCou(@Param("snum") String snum,@Param("page") Integer page,@Param("limit") Integer limit);
 }

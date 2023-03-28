@@ -12,4 +12,5 @@ interface user {
     department_id:number;
     counselor_id:number;
     status:number;
+    health_status:number
 }

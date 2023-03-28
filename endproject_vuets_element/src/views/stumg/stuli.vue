@@ -28,6 +28,12 @@
           <el-tag v-if="scope.row.status==0">离校</el-tag>
       </template>
     </el-table-column>
+    <el-table-column prop="health_status" label="填报状态" width="95" >
+      <template v-slot:default="scope">
+        <el-tag v-if="scope.row.health_status==1">已填报</el-tag>
+        <el-tag type="warning" v-if="scope.row.health_status==0">未填报</el-tag>
+      </template>
+    </el-table-column>
     <el-table-column  label="操作" width="284" >
       <template #default="{row}" >
           <el-button text @click="(row)"> 修改 </el-button>

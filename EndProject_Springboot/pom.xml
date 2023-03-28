@@ -65,6 +65,11 @@
             <version>0.9.1</version>
         </dependency>
 
+        <!--WebSocket-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
         <!--knife4j与Swagger3/openapi-ui整合 -->
         <!--<dependency>
             <groupId>com.github.xiaoymin</groupId>

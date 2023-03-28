@@ -22,7 +22,9 @@ spring:
         login-username: root
         login-password: 123456
         url-pattern: /druid/*
-
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   servlet:
     multipart:
       max-file-size: 1MB

@@ -1,7 +1,7 @@
 package com.endproject.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.endproject.entity.HealthClock;
+import com.endproject.entity.Health;
 
 import java.util.Date;
 import java.util.List;
@@ -11,9 +11,11 @@ import java.util.List;
  * @Description:
  * @date create in 2023/3/17 16:23
  */
-public interface HealthClockService extends IService<HealthClock> {
+public interface HealthClockService extends IService<Health> {
 
-    List<HealthClock> getHealthByStu(String snum,Integer Page,Integer Limit);
+    List<Health> getHealthByStu(String snum,Integer Page,Integer Limit);
 
     boolean check(String snum, Date create_time);
+
+    List<Health> getHealthByCou(String snum, Integer page, Integer limit);
 }

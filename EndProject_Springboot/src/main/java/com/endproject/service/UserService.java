@@ -20,4 +20,6 @@ public interface UserService extends IService<UserType> {
     void stuupdateByid(Integer userId, String password);
 
     void saveAll(List<UserType> users);
+
+    void ZeroHealthStatus();
 }

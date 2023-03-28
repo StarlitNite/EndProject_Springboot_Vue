@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,38 +78,40 @@ public class LeaveController {
 
     @ApiOperation("创建申请")
     @PostMapping("addleave")
-    public ApiResult<Object> addLeave(Leave leave){
+    public ApiResult<Object> addLeave(@RequestBody Leave leave){
         leaveService.save(leave);
-        return null;
+        return ApiResult.success("操作成功");
     }
 
     @ApiOperation("删除申请")//取消和删除
-    @PostMapping("delleave")
+    @PostMapping("delleave/{id}")
     public ApiResult<Object> delLeave(@PathVariable Integer id){
         leaveService.removeById(id);
-        return null;
+        return ApiResult.success("操作成功");
     }
 
 
     @ApiOperation("更新状态")
     @PostMapping("updateleave")
-    public ApiResult<Object> updateleave(Leave leave, HttpServletRequest request){
+    public ApiResult<Object> updateleave(@RequestBody Leave leave, HttpServletRequest request){
         /*判断身份是否为教师  再判断是否为审批状态，然后根据前端传来的数字进行修改 结束*/
         String header = request.getHeader("Authorization");
         Object role_id = JwtUtil.parse(header);
 
         if((Integer) role_id !=3){
             if (leave.getNode_status()==2){
-                leave.setNode_status(ApprovalEnumStatus.APPROVAL_TEACHER_PASSED.hashCode());
+                leave.setUpdate_time(leave.getUpdate_time());
+                leave.setNode_status(ApprovalEnumStatus.APPROVAL_TEACHER_PASSED.getCode());
                 leaveService.updateById(leave);
             }else if (leave.getNode_status()==3){
-                leave.setNode_status(ApprovalEnumStatus.TEACHER_REJECTED.hashCode());
+                leave.setUpdate_time(leave.getUpdate_time());
+                leave.setNode_status(ApprovalEnumStatus.TEACHER_REJECTED.getCode());
                 leaveService.updateById(leave);
             }
 
         }
 
-        return ApiResult.success();
+        return ApiResult.success("操作成功");
     }
 
 }

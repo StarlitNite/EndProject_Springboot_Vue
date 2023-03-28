@@ -3,7 +3,7 @@
     <el-container>
       <el-aside width="200px" height="100%">
         <el-col :span="12">
-        <h5 class="mb-2">Custom colors</h5>
+        <h5 class="mb-2">疫情管理系统</h5>
         <el-menu
             active-text-color="#ffd04b"
             background-color="#545c64"
@@ -14,7 +14,6 @@
             :router="true"
         >
           <template  v-for="menu in Menus ">
-
           <el-sub-menu v-if="menu.child.length"  :index="menu.id+''" :key="menu.id" >
             <template #title>
               {{ menu.title }}

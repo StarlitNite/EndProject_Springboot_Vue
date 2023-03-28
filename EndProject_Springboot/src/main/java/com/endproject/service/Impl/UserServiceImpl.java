@@ -43,4 +43,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserType> implements U
             userDao.saveAll(userType);
         }
     }
+
+    @Override
+    public void ZeroHealthStatus() {
+        userDao.ZeroHealthStatus();
+    }
 }
