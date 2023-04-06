@@ -46,6 +46,14 @@ interface leave{
     limit:number;
 }
 
+//会话接口
+interface chat {
+    snum:string
+    tosnum:string
+    touserName:string
+    sessionId:number
+}
+
 
 //登录
 export const adminLogin =(data:adminLoginData):PromiseRes<AdminLoginRes> =>request.post('/user/login',data)
@@ -71,7 +79,7 @@ export const getRoldById=(id:number):PromiseRes<{list:{}[]}> => request.get('/ro
 //删除角色
 /*export const DeleteRole=(data:Role)=>request.delete('/role/DeleteRole',data.id)*/
 
-//获取请假列表API
+//获取请假列表
 export const getleave=(data:leave):PromiseRes<{list:{}[]}> => request.get('/leave/getleave',{params:data})
 
 //审批通过返回接口
@@ -94,3 +102,17 @@ export const updatehealthclock=(data:health):PromiseRes => request.post('/health
 
 //填报无法自主删除
 
+//获取可建立会话列表
+export const getSessionListNot=(data:chat):PromiseRes<{ list:{}[] }> => request.get('/sessionList/not?id='+data.snum);
+
+//获取已存在的会话列表
+export const sessionListAlready=(data:chat):PromiseRes<{ list:{}[] }> => request.get('/sessionList/already?id='+data.snum)
+
+//创建会话
+export const createSession=(data:chat):PromiseRes => request.get('/createSession?id='+data.snum+'&tosnum='+data.tosnum+'&toUserName='+data.touserName)
+
+//删除会话
+export const delSession=(data:chat):PromiseRes=> request.get('/delSession?sessionId='+data.sessionId)
+
+//获取消息数据
+export const msgList=(data:chat):PromiseRes<{ list:{}[] }>=> request.get('/msgList?sessionId='+data.sessionId)

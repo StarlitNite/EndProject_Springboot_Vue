@@ -15,6 +15,7 @@ import com.endproject.Model.dto.addUserInfo;
 import com.endproject.Model.vo.UserVo;
 import com.endproject.entity.*;
 import com.endproject.service.*;
+import com.endproject.util.CurPool;
 import com.endproject.util.JwtUtil;
 import com.endproject.util.ApiResult;
 import io.swagger.annotations.Api;
@@ -87,6 +88,7 @@ public class UserController {
         map.put("snum",userType.getSnum());
         map.put("token",Jwt);
         System.out.println(map);
+        CurPool.curUserPool.put(userType.getUsername(), userType);//消息池
         return ApiResult.success("登录成功",map);
     }
 

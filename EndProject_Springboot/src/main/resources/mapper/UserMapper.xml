@@ -24,4 +24,77 @@
         update user set health_status = 0
     </update>
 
+
+    <resultMap id="BaseResultMap" type="com.endproject.entity.UserType">
+        <id column="snum" jdbcType="VARCHAR" property="snum" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        snum, `username`
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where snum = #{snum,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from user
+        where snum = #{snum,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insertchat" parameterType="com.endproject.entity.UserType">
+        insert into user (snum, username)
+        values (#{snum,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.endproject.entity.UserType">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="snum != null">
+                snum,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="snum != null">
+                #{snum,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.endproject.entity.UserType">
+        update user
+        <set>
+            <if test="username != null">
+                `username` = #{username,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where snum = #{snum,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.endproject.entity.UserType">
+        update user
+        set `username` = #{username,jdbcType=VARCHAR}
+        where snum = #{snum,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByName" resultType="java.lang.String">
+        SELECT username FROM user WHERE username = #{username}
+    </select>
+
+    <select id="getCloudList" resultMap="BaseResultMap">
+        SELECT snum,username FROM user
+        <if test="list != null">
+            WHERE snum not in
+            <foreach collection="list" open="(" close=")" separator="," item="i">
+                #{i}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT snum,username FROM user WHERE username = #{username}
+    </select>
 </mapper>
