@@ -135,7 +135,7 @@ public class WebSocketServer {
                 session.getBasicRemote().sendText(message);
             }
         } catch (Exception e) {
-            log.error("服务端发送消息给客户端失败", e);
+            log.error("服务端发送消息给客户端失败",e);
         }
     }
 }
