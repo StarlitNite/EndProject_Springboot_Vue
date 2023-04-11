@@ -166,45 +166,6 @@ public class UserController {
         params.setHeadRows(3);
         List<UserType> users = ExcelImportUtil.importExcel(file.getInputStream(),UserType.class,params);
         userService.saveAll(users);
-        /*//1.判断文件不能为空
-        if (file.isEmpty()){
-            return  ApiResult.error("文件为空！");
-        }
-        //2.POI获取Excel解析数据
-        HSSFWorkbook wb = new HSSFWorkbook(file.getInputStream());
-        HSSFSheet sheet = wb.getSheetAt(0);
-        //3.定义集合接收文件数据
-        List<UserType> list = new ArrayList<>();
-        HSSFRow row = null;
-        //4.解析数据，装到集合里
-        for (int i = 0;i<sheet.getPhysicalNumberOfRows();i++){
-            //4.1定义实体
-            UserType userType = new UserType();
-            //4.2每一行数据放到实体类中
-            row = sheet.getRow(i);
-            //4.3解析
-            userType.setId((int)row.getCell(0).getNumericCellValue());
-            userType.setSnum(row.getCell(1).getStringCellValue());
-            userType.setUsername(row.getCell(2).getStringCellValue());
-            userType.setPassword(row.getCell(3).getStringCellValue());
-            userType.setFamily_address(row.getCell(4).getStringCellValue());
-            userType.setDorm_address(row.getCell(5).getStringCellValue());
-            userType.setTel(row.getCell(6).getStringCellValue());
-            userType.setAge((int)row.getCell(7).getNumericCellValue());
-            userType.setGender(row.getCell(8).getStringCellValue());
-            userType.setSalt(row.getCell(9).getStringCellValue());
-            userType.setStatus((int)row.getCell(10).getNumericCellValue());
-            userType.setRole_id((int)row.getCell(11).getNumericCellValue());
-            userType.setDepartment_id((int)row.getCell(12).getNumericCellValue());
-            userType.setMajor_id((int)row.getCell(13).getNumericCellValue());
-            userType.setClasse_id((int)row.getCell(14).getNumericCellValue());
-            userType.setCounselor_id((int)row.getCell(14).getNumericCellValue());
-
-            list.add(userType);
-        }
-
-        userService.saveBatch(list);
-        return null;*/
         return  ApiResult.success("导入成功");
     }
 

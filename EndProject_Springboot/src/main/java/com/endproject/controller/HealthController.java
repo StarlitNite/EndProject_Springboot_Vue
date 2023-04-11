@@ -104,7 +104,6 @@ public class HealthController {
         * select * from health_clock where snum = #{snum} and
         * 如何传递今天的时间，前端传递？
         * SELECT count(*) FROM health_clock WHERE TO_DAYS(create_time) = TO_DAYS(NOW()) AND snum = #{}  */
-
     }
 
     @ApiOperation("修改填报")

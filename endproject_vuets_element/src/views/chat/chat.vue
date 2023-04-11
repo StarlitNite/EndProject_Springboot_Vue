@@ -117,7 +117,7 @@ onUpdated(()=>{
 })
 
 const initWebSocket =(snum:string,sessionId:number)=>{
-  websock = new WebSocket("ws://localhost:8000/websocket/"+snum+"/"+sessionId);
+  websock = new WebSocket("ws://localhost:8000/api/websocket/"+snum+"/"+sessionId);
   console.log("websock")
   console.log(websock)
   websock.onopen = websocketonopen;

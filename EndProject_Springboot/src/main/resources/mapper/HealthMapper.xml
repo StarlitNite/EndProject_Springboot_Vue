@@ -4,14 +4,14 @@
 <mapper namespace="com.endproject.dao.HealthClockDao">
 
     <select id="getHealthByStu" resultType="com.endproject.entity.Health">
-        select * from health_clock where snum = #{snum} order by health_clock.snum asc limit ${limit} offset ${page};
+        select * from health_clock where snum = #{snum} order by health_clock.create_time DESC limit ${limit} offset ${page};
     </select>
 
     <select id="getHealthByCou" resultType="com.endproject.entity.Health">
-        SELECT h.id,h.snum,h.local,h.confirmed,h.asymptomatic,h.today_temp,h.fever_and_cough,h.cough,h.recent_home,h.create_time,h.status FROM health_clock as h
+        SELECT h.id,h.snum,h.local,h.confirmed,h.asymptomatic,h.today_temp,h.fever_and_cough,h.cough,h.recent_home,h.create_time,h.health_status FROM health_clock as h
         LEFT JOIN `user` ON `user`.snum = h.snum WHERE `user`.counselor_id=
         (SELECT counselor.id FROM counselor LEFT JOIN `user` ON `user`.snum = counselor.cnum WHERE snum=#{snum})
-        order by h.snum asc limit #{limit} offset #{page};
+        order by  h.create_time DESC limit #{limit} offset #{page};
     </select>
     <select id="check" resultType="java.lang.Boolean">
         SELECT count(*) FROM health_clock WHERE TO_DAYS(#{create_time}) = TO_DAYS(NOW()) AND snum = #{snum}
