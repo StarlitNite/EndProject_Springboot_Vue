@@ -37,6 +37,24 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao,Menu> implements MenuSe
         }
         return menusList;
     }
+    @Override
+    public List<Menu> MenuTree() {
+        //1.查询出Menu中的内容
+        List<Menu> menus = menuDao.AllMenuTree();
+        //2.组装成树结构
+        List<Menu> menusList = new ArrayList<>();
+        //找到一级分类
+        for (Menu menuDad : menus){
+            if (menuDad.getPid() == 0){
+                menusList.add(menuDad);
+            }
+        }
+
+        for (Menu menuChild:menusList){
+            menuChild.setChild(getChild(menuChild,menus));
+        }
+        return menusList;
+    }
 
     @Override
     public List<Menu> getChild(Menu root, List<Menu> all){
@@ -50,6 +68,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao,Menu> implements MenuSe
         }
         return child;
     }
+
+
 
    /* @Override
     public void AddMenu(Menu menu) {

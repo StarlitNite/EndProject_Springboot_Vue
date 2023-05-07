@@ -14,7 +14,9 @@
         order by  h.create_time DESC limit #{limit} offset #{page};
     </select>
     <select id="check" resultType="java.lang.Boolean">
-        SELECT count(*) FROM health_clock WHERE TO_DAYS(#{create_time}) = TO_DAYS(NOW()) AND snum = #{snum}
+        SELECT count(*)
+        FROM health_clock
+        WHERE TO_DAYS(#{create_time}) = TO_DAYS(NOW()) AND snum = #{snum}
     </select>
 
 

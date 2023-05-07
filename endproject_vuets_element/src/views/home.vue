@@ -27,8 +27,12 @@
         </el-menu>
       </el-col></el-aside>
       <el-container>
-        <el-header>Header</el-header>
-        <el-main><router-view/></el-main>
+        <el-header>
+          <el-button type="info" @click="logout">退出</el-button>
+        </el-header>
+        <el-main>
+          <router-view/>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -49,6 +53,11 @@ interface menus{
 }
 const store = useStore();
 const Menus: menus= store.state.menus;
+const logout = () =>{//退出登录
+  window.sessionStorage.clear()
+  router.push('/login')
+}
+
 </script>
 
 <style scoped>

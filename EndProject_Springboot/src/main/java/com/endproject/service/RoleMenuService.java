@@ -19,6 +19,7 @@ public interface RoleMenuService extends IService<RoleMenu> {
     List<RoleMenuOut> getRole(Integer rid);
     List<RoleMenuOut> getRoleMenuOutChildList(RoleMenuOut root,List<RoleMenuOut> all);
 
+
     void deleteRoleByRid(Integer rid);
 
     void SaveRoleMenu(@Param("rid") Integer rid,@Param("mid") Integer mid);

@@ -16,6 +16,9 @@
         WHERE rid = ${role_id}
     </select>
 
+    <select id="AllMenuTree" resultType="com.endproject.entity.Menu">
+        select * from menu;
+    </select>
     <!--<insert id="addMenu" parameterType="com.endproject."></insert>-->
 
 

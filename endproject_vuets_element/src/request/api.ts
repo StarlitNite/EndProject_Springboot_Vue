@@ -116,3 +116,9 @@ export const delSession=(data:chat):PromiseRes=> request.get('/delSession?sessio
 
 //获取消息数据
 export const msgList=(data:chat):PromiseRes<{ list:{}[] }>=> request.get('/msgList?sessionId='+data.sessionId)
+
+//获取所有菜单用于权限修改
+export const getAllMenu=():PromiseRes<UserMenu>=>request.get('/role/getAllMenu')
+
+//修改角色菜单权限
+export const SaveRole=(data:roleMenu):PromiseRes =>request.post('/role/SaveRole?rid='+data.rid+'&mids='+data.mid)

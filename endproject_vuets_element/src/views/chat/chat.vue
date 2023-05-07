@@ -53,7 +53,6 @@
               {{item.content}}
             </div>
           </div>
-
         </div>
         <div class="down">
           <el-input
@@ -64,7 +63,7 @@
               v-model="textarea">
           </el-input>
 
-          <!-- <el-button  @click="sendMsg">发送</el-button> -->
+           <el-button  @click="sendMsg">发送</el-button>
         </div>
       </div>
     </div>

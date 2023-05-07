@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.endproject.Model.vo.RoleMenuOut;
 import com.endproject.Model.vo.RoleVo;
 import com.endproject.dao.RoleDao;
+import com.endproject.entity.Menu;
 import com.endproject.entity.Role;
+import com.endproject.service.MenuService;
 import com.endproject.service.RoleMenuService;
 import com.endproject.service.RoleService;
 import com.endproject.util.ApiResult;
@@ -37,6 +39,9 @@ public class RoleController {
     RoleService roleService;
 
     @Autowired
+    MenuService menuService;
+
+    @Autowired
     RoleDao roleDao;
 
     /**
@@ -52,6 +57,20 @@ public class RoleController {
     }
 
     /**
+    * @Description: 获取全部的菜单 用以分配权限
+    * @date 2023/5/3 22:39
+    * @author WangNaiLinn
+    **/
+
+    @ApiOperation("获取全部菜单")
+    @GetMapping("getAllMenu")
+    public ApiResult<Object> getAllMenu(){
+        List<Menu> AllMenu = menuService.MenuTree();
+
+        return ApiResult.success(AllMenu);
+    }
+
+    /**
     * @Description: 权限管理 分配权限后置接口
     * @date 2023/2/11 21:23
     * @author WangNaiLinn
@@ -60,7 +79,7 @@ public class RoleController {
     @ApiOperation("权限变动")
     @PostMapping("SaveRole")
     @ResponseBody
-    public ApiResult<Object> SaveRole(@Param("rid") Integer rid,@Param("mids") Integer[] mids){
+    public ApiResult<Object> SaveRole(@RequestParam("rid") Integer rid,@RequestParam("mids") Integer[] mids){
         //1.删除rid对应权限
 
         roleMenuService.deleteRoleByRid(rid);
@@ -88,6 +107,7 @@ public class RoleController {
     public ApiResult<Object> getRole(RoleVo roleVo){
         Page<Role> page = new Page<>(roleVo.getPage(),roleVo.getLimit());
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+        /*queryWrapper.like("id",roleVo.getId());*/
         queryWrapper.like(StringUtils.isNotBlank(roleVo.getName()),"name",roleVo.getName());
         queryWrapper.like(StringUtils.isNotBlank(roleVo.getRemark()),"remark",roleVo.getRemark());
         /*List<Role> list = roleService.list();

@@ -36,6 +36,8 @@ const state = reactive <{formLabelWidth:string; newForm:leave}> ({
 const { formLabelWidth,newForm } = toRefs(state)
 watch(()=> props.form,()=>{
   newForm.value = {...props.form}
+  console.log("watch")
+  console.log(newForm.value.id)
 })
 const emit = defineEmits<{
   (event:'close',r?: 'reload'):void

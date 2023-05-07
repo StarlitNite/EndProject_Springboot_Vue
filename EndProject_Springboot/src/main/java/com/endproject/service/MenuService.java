@@ -13,7 +13,11 @@ public interface MenuService extends IService<Menu> {
     //菜单树
     List<Menu> MenuTree(Integer role_id);
 
+    List<Menu> MenuTree();
+
     List<Menu> getChild(Menu root,List<Menu> all);
+
+
 
     /*void AddMenu(Menu menu);*/
 

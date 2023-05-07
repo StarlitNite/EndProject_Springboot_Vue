@@ -38,19 +38,16 @@ const getRoutes = ()=>{
         path:'/home',
         name:'home',
         component:()=> import('../views/home.vue'),
-        redirect:'/index',
+        /*redirect:'/index',*/
         children:[{
             path:'/index',
             name:'index',
-            component:()=>import('../views/index.vue')
+            component:()=>import('../views/index/index.vue')
         }
         ]
     })
     //获取菜单
     const Menus= store.state.menus;
-    //
-    /*const newRoute:RouteRecordRaw[] = [];*/
-
     //动态生成路由路径  循环菜单对象
     for (let key in Menus){
         /*console.log(Menus[key].path)*/
@@ -93,6 +90,7 @@ router.beforeEach((to,from,next)=>{
     const token = Cookie.get('token')
     /*console.log(store)*/
 
+    //有token但无菜单
     if (token && store.state.menus.length===0){
 
         // console.log("空")
@@ -132,6 +130,7 @@ router.beforeEach((to,from,next)=>{
         })
 
     }
+
     else if (token && store.state.menus.length!==0 && from.path==='/login'&&to.path==='/home'){
         getRoutes()
         next('/index')
@@ -147,4 +146,4 @@ router.beforeEach((to,from,next)=>{
 export const initRouter = (app: App<Element>) => {
     app.use(router)
 }
-// export default router
+ export default router

@@ -26,6 +26,8 @@ public interface RoleMenuDao extends BaseMapper<RoleMenu> {
 
     List<RoleMenuOut> getRoleMenuOutByRid(Integer rid);
 
+    List<RoleMenuOut> getAllRoleMenu();
+
     //分配菜单栏前删除rid对应的权限
     void deleteRoleByRid(Integer rid);
     //保存分配权限

@@ -14,6 +14,7 @@ import java.util.List;
 @Mapper
 public interface MenuDao extends BaseMapper<Menu> {
     List<Menu> MenuTree(Integer role_id);
+    List<Menu> AllMenuTree();
 
     /*@Insert("INSERT INTO menu(pid,title,path) VALUES (#{pid},#{title},#{path})")
     void AddMenu(Menu menu);*/

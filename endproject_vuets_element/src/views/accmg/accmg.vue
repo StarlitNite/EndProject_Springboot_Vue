@@ -5,14 +5,14 @@
     <el-table-column prop="remark" label="权限" />
     <el-table-column  label="操作" >
       <template #default="{row}">
-<!--        <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="0"/>-->
         <el-button text @click="UpdateRole(row)"> 修改 </el-button>
         <el-button text @click="DeleteRole"> 删除 </el-button>
-        <el-button text @click="SaveRole"> 分配权限 </el-button>
+        <el-button text @click="SaveRole(row)"> 分配权限 </el-button>
       </template>
     </el-table-column>
   </el-table>
   <UpdateDialog :visible="visible" @close="closeDialog" :form="rowData"/>
+  <SaveDialog :visible="Savevisible" @close="closeSaveDialog" :tree="TreeData"/>
 </template>
 
 <script lang="ts" setup>
@@ -20,18 +20,23 @@
 import {reactive, toRefs, ref, watch} from 'vue'
 import {getRole} from '../../request/api'
 import UpdateDialog from '../../components/UpdateDialog.vue'
+import SaveDialog from '../../components/SaveDialog.vue'
 
 
 const state = reactive<{
   tableData:{}[],//{}指的是对象类型
   visible:boolean,
-  rowData:Role
+  rowData:Role,
+  TreeData:Role,
+  Savevisible:boolean,
 }>({
   tableData:[],
   visible:false,
-  rowData:{}
+  rowData:{},
+  TreeData:{},
+  Savevisible:false
 })
-const {tableData, visible ,rowData} = toRefs(state)
+const {tableData, visible ,rowData,Savevisible,TreeData} = toRefs(state)
 getRole({
   name:'',
   Page:5,
@@ -47,6 +52,14 @@ getRole({
 const UpdateRole = (row:{}) =>{
   visible.value = true;
   rowData.value = row;
+}
+
+//分配权限按钮
+const SaveRole = (row:{}) =>{
+  Savevisible.value = true;
+  TreeData.value = row;
+  console.log("TreeData.value")
+  console.log(TreeData.value)
 }
 
 
@@ -66,6 +79,22 @@ const closeDialog = (r?:'reload')=>{//问号是可选属性
       }
     })
   }
+}
+
+//隐藏权限分配Dialog
+const closeSaveDialog = (r?:'reload')=>{//问号是可选属性
+  Savevisible.value = false;
+  /*if (r==='reload'){
+    getRole({
+      name:'',
+      Page:5,
+      limit:5
+    }).then(res=>{
+      if (res.code===200){
+        tableData.value = res.result.records
+      }
+    })
+  }*/
 }
 /*watch(
     ()=>visible.value,(newVal,oldVal)=>{
