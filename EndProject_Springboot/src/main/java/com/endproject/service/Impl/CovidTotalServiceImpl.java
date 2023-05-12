@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.endproject.dao.CovidTotalDao;
 import com.endproject.entity.CovidTotal;
 import com.endproject.service.CovidTotalService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author：乃王木木
@@ -12,4 +15,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CovidTotalServiceImpl extends ServiceImpl<CovidTotalDao, CovidTotal> implements CovidTotalService {
+
+    @Autowired
+    CovidTotalDao covidTotalDao;
+
+    @Override
+    public List<CovidTotal> getAllTotal() {
+        return covidTotalDao.getAllTotal();
+    }
 }

@@ -28,7 +28,8 @@
       </el-col></el-aside>
       <el-container>
         <el-header>
-          <el-button type="info" @click="logout">退出</el-button>
+
+          <el-button type="info"  @click="logout">退出</el-button>
         </el-header>
         <el-main>
           <router-view/>

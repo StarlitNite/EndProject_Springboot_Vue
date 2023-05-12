@@ -33,19 +33,7 @@ const modules = import.meta.glob('../views/**/**.vue')
 //获取菜单
 
 const getRoutes = ()=>{
-    //动态添加菜单
-    router.addRoute({
-        path:'/home',
-        name:'home',
-        component:()=> import('../views/home.vue'),
-        /*redirect:'/index',*/
-        children:[{
-            path:'/index',
-            name:'index',
-            component:()=>import('../views/index/index.vue')
-        }
-        ]
-    })
+
     //获取菜单
     const Menus= store.state.menus;
     //动态生成路由路径  循环菜单对象
@@ -82,6 +70,20 @@ const getRoutes = ()=>{
             }
         }
     }
+    //动态添加菜单
+        router.addRoute({
+            path:'/',
+            name:'home',
+            component:()=> import('../views/home.vue'),
+            redirect:'/index',
+            children:[{
+                path:'index',
+                name:'index',
+                component:()=>import('../views/index/index.vue')
+            }
+            ]
+        })
+
 }
 //前置导航守卫
 router.beforeEach((to,from,next)=>{

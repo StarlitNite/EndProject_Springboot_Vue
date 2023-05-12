@@ -2,6 +2,7 @@ package com.endproject.entity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -17,14 +18,22 @@ import java.sql.Date;
 public class CovidTotal {
     @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
-    private String totalCured; //全国累计治愈数
-    private String totalDeath; //全国累计死亡数
-    private String incDoubtful; //全国疑似数，较昨日对比
-    private String childStatistic; //“全国”
-    private String totalDoubtful; //全国疑似数
-    private String totalConfirmed; //全国累计确诊数
-    private String updateTime; //更新时间
-    private String dataSource; //数据来源
+    //@TableField(value = "total_cured")
+    private String total_cured; //全国累计治愈数
+    //@TableField(value = "total_death")
+    private String total_death; //全国累计死亡数
+    //@TableField(value = "inc_doubtful")
+    private String inc_doubtful; //全国疑似数，较昨日对比
+    //@TableField(value = "child_statistic")
+    private String child_statistic; //“全国”
+    //@TableField(value = "total_doubtful")
+    private String total_doubtful; //全国疑似数
+    //@TableField(value = "total_confirmed")
+    private String total_confirmed; //全国累计确诊数
+    //@TableField(value = "update_time")
+    private String update_time; //更新时间
+    //@TableField(value = "data_source")
+    private String data_source; //数据来源
 
 
 }

@@ -81,14 +81,14 @@ public class CovidDataScheduleTask {
             Object dataSource = updateTimeObject.get("dataSource");
 
             //赋值
-            covidTotal.setTotalCured(totalCured.toString());
-            covidTotal.setTotalDeath(totalDeath.toString());
-            covidTotal.setIncDoubtful(incDoubtful.toString());
-            covidTotal.setChildStatistic(childStatistic.toString());
-            covidTotal.setTotalDoubtful(totalDoubtful.toString());
-            covidTotal.setTotalConfirmed(totalConfirmed.toString());
-            covidTotal.setUpdateTime(updateTime.toString());
-            covidTotal.setDataSource(dataSource.toString());
+            covidTotal.setTotal_cured(totalCured.toString());
+            covidTotal.setTotal_death(totalDeath.toString());
+            covidTotal.setInc_doubtful(incDoubtful.toString());
+            covidTotal.setChild_statistic(childStatistic.toString());
+            covidTotal.setTotal_doubtful(totalDoubtful.toString());
+            covidTotal.setTotal_confirmed(totalConfirmed.toString());
+            covidTotal.setUpdate_time(updateTime.toString());
+            covidTotal.setData_source(dataSource.toString());
             //总数据插入数据库
             covidTotalService.saveOrUpdate(covidTotal);
             //System.out.println("总数据"+covidTotal);
@@ -137,10 +137,10 @@ public class CovidDataScheduleTask {
 
                 //赋值
                 //covidProvince.setId(j);
-                covidProvince.setTotalCured(totalCuredPro.toString());
-                covidProvince.setTotalDeath(totalDeathPro.toString());
-                covidProvince.setChildStatistic(childStatisticPro.toString());
-                covidProvince.setTotalConfirmed(totalConfirmedPro.toString());
+                covidProvince.setTotal_cured(totalCuredPro.toString());
+                covidProvince.setTotal_death(totalDeathPro.toString());
+                covidProvince.setChild_statistic(childStatisticPro.toString());
+                covidProvince.setTotal_confirmed(totalConfirmedPro.toString());
 
                 provinceList.add(covidProvince);
             }

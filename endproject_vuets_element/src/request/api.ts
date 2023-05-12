@@ -1,60 +1,5 @@
 import request from "./request";
 
-interface adminLoginData{
-    "snum":string
-    "password":string
-    "role_id":number
-}
-type PromiseRes<T={}> = Promise<ManageResult<T>>
-
-interface ManageResult<T={}>{
-    code:number
-    result:T
-    message:string
-}
-
-//登录返回接口
-interface AdminLoginRes{
-    token:string
-    userName:string
-    role_id:number
-    snum:string
-}
-
-interface UserMenu{
-    menus:[]
-}
-
-interface user{
-    snum:string;
-    Page:number;
-    limit:number;
-}
-
-//权限接口
-interface role{
-    name:string;
-    Page:number;
-    limit:number;
-}
-
-//获取请假列表接口
-interface leave{
-    role_id:number;
-    snum:string | undefined;
-    Page:number;
-    limit:number;
-}
-
-//会话接口
-interface chat {
-    snum:string
-    tosnum:string
-    touserName:string
-    sessionId:number
-}
-
-
 //登录
 export const adminLogin =(data:adminLoginData):PromiseRes<AdminLoginRes> =>request.post('/user/login',data)
 
@@ -122,3 +67,8 @@ export const getAllMenu=():PromiseRes<UserMenu>=>request.get('/role/getAllMenu')
 
 //修改角色菜单权限
 export const SaveRole=(data:roleMenu):PromiseRes =>request.post('/role/SaveRole?rid='+data.rid+'&mids='+data.mid)
+
+//获取饼状图
+ export const covidData = ():PromiseRes<IndexData> =>request.get('/covid/covidData')
+
+export const getPie = ():PromiseRes<IndexData> =>request.get('/covid/covidData')
