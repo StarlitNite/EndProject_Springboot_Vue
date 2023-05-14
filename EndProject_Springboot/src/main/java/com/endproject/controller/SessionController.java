@@ -67,6 +67,7 @@ public class SessionController {
     // 删除会话
     @GetMapping("/delSession")
     public ApiResult<?> delSession(@RequestParam Integer sessionId){
+        System.out.println(sessionId);
         sessionListDao.deleteByPrimaryKey(sessionId);
         return ApiResult.success();
     }

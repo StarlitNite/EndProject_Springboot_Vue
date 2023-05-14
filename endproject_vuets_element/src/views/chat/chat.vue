@@ -26,7 +26,7 @@
                 {{item.unReadCount}}
               </div>
               <div class="right_left_del">
-                <i class="el-icon-close" @click="delSession(item.snum)"></i>
+                <el-button  @click="delSession2(item.id)">{{curSessionId}}</el-button>
               </div>
             </div>
           </div>
@@ -85,6 +85,7 @@
 import {reactive, toRefs, ref, onUpdated} from 'vue'
 import Cookie from "js-cookie";
 import {getSessionListNot,sessionListAlready,createSession,delSession,msgList} from '../../request/api'
+import {log} from "echarts/types/src/util/log";
 
 const state = reactive<{
   list:{}[],
@@ -168,30 +169,52 @@ const sendMsg = ()=>{
 }
 //
 const start=() =>{
-  getSessionListNot(curUserId)
-  sessionListAlready(curUserId)
+
+  console.log("curUserName")
+  console.log(curUserName)
+  console.log("curUserId")
+  console.log(curUserId)
+  getSessionListNot2(curUserId)
+  sessionListAlready2(curUserId)
   startSession(99999)
 }
 
 // 获取可建立会话列表
-getSessionListNot({
+/*getSessionListNot({
   snum:curUserId
 }).then(res=>{
   sessionList_not = res.result
   console.log("获取可建立会话列表")
   console.log(sessionList_not)
-})
+})*/
+const getSessionListNot2=(curUserId:string)=>{
+  console.log("getSessionListNot2---------curUserId")
+  console.log(curUserId)
+  getSessionListNot({snum:curUserId}).then(res=>{
+    sessionList_not = res.result
+    console.log("获取可建立会话列表")
+    console.log(sessionList_not)
+  })
+}
 //方法（）{api}
 
 // 获取已存在的会话列表
-sessionListAlready({
+/*sessionListAlready({
   snum:curUserId
 }).then(res=>{
   sessionList_already = res.result
   console.log("获取已存在的会话列表")
   console.log(sessionList_already)
-})
-
+})*/
+const sessionListAlready2=(curUserId:string)=>{
+  console.log("sessionListAlready2---------curUserId")
+  console.log(curUserId)
+  sessionListAlready({snum:curUserId}).then(res=>{
+    sessionList_already = res.result
+    console.log("获取已存在的会话列表")
+    console.log(sessionList_already)
+  })
+}
 // 创建会话
 /*createSession({snum:curUserId,tosnum:'',toUserName:''}).then(res=>{
 
@@ -206,16 +229,22 @@ const createSession2 = (tosnum:string,touserName:string) =>{
     tosnum:tosnum,
     touserName:touserName
   }).then(res=>{
-    getSessionListNot(curUserId);
-    sessionListAlready(curUserId);
+    console.log(res)
+    getSessionListNot2(curUserId);
+    sessionListAlready2(curUserId);
   })
 
 
 }
+/**
+* @Description: 开始会话有问题
+* @date 2023/5/14 18:11
+* @author WangNaiLinn
+**/
 
-// 开始会话
+// 开始会话   有问题*****
 const startSession = (sessionId:number)=>{
-  console.log(websock);
+  //console.log(websock);
   if(websock != undefined){
     websock.close()
   }
@@ -225,12 +254,22 @@ const startSession = (sessionId:number)=>{
 }
 
 //删除会话
-delSession({
-  snum:curUserId
-}).then(res=>{
+/*delSession({
+  sessionId:curSessionId as number
+}
+).then(res=>{
+  console.log("-----delSessionIng");
   getSessionListNot(curUserId);
   sessionListAlready(curUserId);
-})
+})*/
+const delSession2 = (sessionId:number)=>{
+  console.log(sessionId)
+  delSession({sessionId:sessionId}).then(res=>{
+
+    getSessionListNot(curUserId);
+    sessionListAlready(curUserId);
+  })
+}
 
 const msgList2 = (sessionId:number) =>{
   console.log(sessionId)

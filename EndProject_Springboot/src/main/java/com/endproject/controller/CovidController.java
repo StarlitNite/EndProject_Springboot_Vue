@@ -46,4 +46,12 @@ public class CovidController {
         return ApiResult.success(map);
     }
 
+
+    /**
+    * @Description:  列表状显示在index上，不可点击、仅做展示？退出功能 消息通知  通知  WebSocket
+    * @date 2023/5/12 21:19
+    * @author WangNaiLinn
+    **/
+
+
 }
