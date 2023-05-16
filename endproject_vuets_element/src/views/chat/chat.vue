@@ -107,9 +107,9 @@ const state = reactive<{
 
 let {textarea,list,curSessionId,sessionList_already,sessionList_not} = toRefs(state)
 const curUserId = Cookie.get("snum")
-console.log(curUserId)
+//console.log(curUserId)
 const curUserName  = Cookie.get("userName")
-console.log(curUserName)
+//console.log(curUserName)
 let websock:any = null;
 onUpdated(()=>{
   var elmnt = document.getElementById("msg_end");
@@ -133,9 +133,12 @@ const websocketonerror = (e:Event)=>{
 }
 const websocketonmessage = (e:MessageEvent)=>{
   let data = JSON.parse(e.data);
+  console.log("websocketonmessage-------data")
+  console.log(data)
   if(data instanceof Array){
     // 列表数据
     sessionList_already.value = data
+    console.log("sessionList_already--------------websocketonmessage")
   }else{
     // 消息数据
     list.value.push(data)
@@ -144,8 +147,10 @@ const websocketonmessage = (e:MessageEvent)=>{
 const websocketclose = (e:CloseEvent)=>{
   if(curUserId != null){
     if(curSessionId != null){
+      console.log("initWebSocket(curUserId, curSessionId)")
       initWebSocket(curUserId, curSessionId)
     }else{
+      console.log("initWebSocket(curUserId, 99999999)")
       initWebSocket(curUserId, 99999999)
     }
   }
@@ -155,16 +160,24 @@ const websocketclose = (e:CloseEvent)=>{
 
 
 const sendMsg = ()=>{
+  console.log("curSessionId------------sendMsg")
+  console.log(curSessionId)
   if(curSessionId == ''){
     return onmessage.error("请选择左边的对话框开始聊天!")
   }
   let data = {
     "fromUserId": curUserId,
     "fromUserName": curUserName,
-    "content": textarea
+    "content": textarea.value
   }
+  console.log("data")
+  console.log(data)
   list.value.push(data)
-  websock.send(textarea)
+  console.log("textarea")
+  console.log(textarea.value)
+  websock.send(textarea.value)
+  console.log("websock.send(\"Hello server!\")")
+  websock.send("Hello server!");
   textarea.value=''
 }
 //
@@ -237,18 +250,20 @@ const createSession2 = (tosnum:string,touserName:string) =>{
 
 }
 /**
-* @Description: 开始会话有问题
+* @Description: 开始会话有问题  已解决
 * @date 2023/5/14 18:11
 * @author WangNaiLinn
 **/
 
-// 开始会话   有问题*****
+// 开始会话
 const startSession = (sessionId:number)=>{
   //console.log(websock);
   if(websock != undefined){
     websock.close()
   }
   curSessionId = sessionId
+  console.log("curSessionId")
+  console.log(curSessionId)
   initWebSocket(curUserId, sessionId)
   msgList2(sessionId)
 }
@@ -275,7 +290,7 @@ const msgList2 = (sessionId:number) =>{
   console.log(sessionId)
   msgList({sessionId:sessionId}).then(res=>{
     list.value = res.result
-    sessionListAlready(curUserId)
+    sessionListAlready2(curUserId)
   })
 }
 

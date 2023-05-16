@@ -43,15 +43,17 @@
     </el-table-column>
   </el-table>
   <editUserDialog :visible="visible" @close="closeDialog" :form="rowData"/>
-  <div class="demo-pagination-block">
+  <div >
     <el-pagination
-        v-model:current-page="currentPage3"
-        v-model:page-size="pageSize3"
-        layout="prev, pager, next, jumper"
+        :current-page=info.Page
+        :page-size=info.limit
+        :page-sizes="[5,10, 50, 100]"
+        layout="total, sizes, prev, pager, next, jumper"
         :total="pagination"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
     />
+
   </div>
 </template>
 
@@ -64,29 +66,70 @@ const state = reactive<{
   tableData:{}[],
   pagination:[]//分页
   visible:boolean,
-  rowData:user
+  rowData:user,
+  pageSize:number
 }>({
       tableData:[],
       pagination:[],
       visible:false,
-      rowData: {}
+      rowData: {},
+      pageSize:''
 }
 )
-const {tableData,visible,rowData,pagination} = toRefs(state)
-
-getUser({
+const {tableData,visible,rowData,pagination,pageSize} = toRefs(state)
+let info={
   snum:'',
   Page:1,
   limit:10
+}
+getUser({
+  snum:info.snum,
+  Page:info.Page,
+  limit:info.limit
 }).then(res=>{
   if (res.code===200){
     tableData.value = res.result.records
-
-    pagination.value = res.result.pages;
-
-
+    pagination.value = res.result.total;
+    pageSize.value = res.result.size;
+    console.log(pageSize.value)
   }
 })
+
+const handleSizeChange = (limit:number)=>{
+  info.limit = limit
+  console.log(info.limit);
+  getUser({
+    snum:info.snum,
+    Page:info.Page,
+    limit:info.limit
+  }).then(res=>{
+    if (res.code===200){
+      tableData.value = res.result.records
+      pagination.value = res.result.total;
+      pageSize.value = res.result.size;
+      console.log("pageSize.value")
+      console.log(pageSize.value)
+    }
+  })
+  console.log("handleSizeChange")
+}
+const handleCurrentChange = (Page:number)=>{
+  info.Page = Page
+  console.log(Page);
+  getUser({
+    snum:info.snum,
+    Page:info.Page,
+    limit:info.limit
+  }).then(res=>{
+    if (res.code===200){
+      tableData.value = res.result.records
+      pagination.value = res.result.total;
+      pageSize.value = res.result.size;
+      console.log(pageSize.value)
+    }
+  })
+  console.log("handleCurrentChange")
+}
 
 /*
 const tableData = ref([]);//表格数据

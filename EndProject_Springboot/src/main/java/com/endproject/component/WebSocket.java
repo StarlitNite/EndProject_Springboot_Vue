@@ -11,6 +11,7 @@ import com.endproject.util.CurPool;
 import com.endproject.util.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -31,6 +32,7 @@ import java.util.List;
 @ServerEndpoint("/websocket/{snum}/{sessionId}")
 public class WebSocket {
 
+
     @Autowired
     private SessionListDao sessionListDao;
 
@@ -46,6 +48,11 @@ public class WebSocket {
     @OnOpen
     public void onOpen(Session session, @PathParam(value="snum")String snum, @PathParam(value="sessionId")Integer sessionId) {
         System.out.println("onOpen");
+        System.out.println(session);
+        System.out.println("snum");
+        System.out.println(snum);
+        System.out.println("sessionId");
+        System.out.println(sessionId);
         this.session = session;
         CurPool.webSockets.put(snum,this);
         List<Object> list = new ArrayList<>();
@@ -60,6 +67,7 @@ public class WebSocket {
         System.out.println("onClose");
         // 断开连接删除用户删除session
         String userId = String.valueOf(this.session.getRequestParameterMap().get("snum").get(0));
+        System.out.println(userId);
         CurPool.sessionPool.remove(userId);
         CurPool.webSockets.remove(userId);
         if (userDao == null){
@@ -73,15 +81,25 @@ public class WebSocket {
     @OnMessage
     public void onMessage(String message) {
         System.out.println("onMessage");
+//        System.out.println("message");
+//        System.out.println(message);
+
         String sessionId = this.session.getRequestParameterMap().get("sessionId").get(0);
+//        System.out.println("sessionId");
+//        System.out.println(sessionId);
         if (sessionId == null){
             System.out.println("sessionId 错误");
         }
         // 在这里无法注入Mapper所以使用这种方式注入Mapper
+
         if (sessionListDao == null){
+//            System.out.println("sessionListDao");
+//            System.out.println(sessionListDao);
             this.sessionListDao = (SessionListDao) SpringContextUtil.getBean("SessionListDao");
         }
         if (userDao == null){
+            System.out.println("userDao");
+            System.out.println(userDao);
             this.userDao = (UserDao)SpringContextUtil.getBean("UserDao");
         }
         if (msgInfoDao == null){
