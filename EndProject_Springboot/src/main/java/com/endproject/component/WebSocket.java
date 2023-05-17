@@ -33,16 +33,32 @@ import java.util.List;
 public class WebSocket {
 
 
-    @Autowired
-    private SessionListDao sessionListDao;
+   /* @Autowired
+    private SessionListDao sessionListDao;*/
+    private static SessionListDao sessionListDao;
 
-    @Autowired
-    private UserDao userDao;
+   /* @Autowired
+    private UserDao userDao;*/
+    private static UserDao userDao;
 
-    @Autowired
-    private MsgInfoDao msgInfoDao;
+   /* @Autowired
+    private MsgInfoDao msgInfoDao;*/
+    private static MsgInfoDao msgInfoDao;
 
     private Session session;
+
+    @Autowired
+    public void setSessionListDao(SessionListDao sessionListDao){
+        WebSocket.sessionListDao = sessionListDao;
+    }
+    @Autowired
+    public void setUserDao(UserDao userDao){
+        WebSocket.userDao = userDao;
+    }
+    @Autowired
+    public void setMsgInfoDao(MsgInfoDao msgInfoDao){
+        WebSocket.msgInfoDao = msgInfoDao;
+    }
 
 
     @OnOpen
@@ -71,7 +87,7 @@ public class WebSocket {
         CurPool.sessionPool.remove(userId);
         CurPool.webSockets.remove(userId);
         if (userDao == null){
-            this.userDao = (UserDao) SpringContextUtil.getBean("userDao");
+            userDao = (UserDao) SpringContextUtil.getBean("userDao");
         }
         UserType user = userDao.selectByPrimaryKey(userId);
         CurPool.curUserPool.remove(user.getUsername());
@@ -95,15 +111,15 @@ public class WebSocket {
         if (sessionListDao == null){
 //            System.out.println("sessionListDao");
 //            System.out.println(sessionListDao);
-            this.sessionListDao = (SessionListDao) SpringContextUtil.getBean("SessionListDao");
+            sessionListDao = (SessionListDao) SpringContextUtil.getBean("SessionListDao");
         }
         if (userDao == null){
             System.out.println("userDao");
             System.out.println(userDao);
-            this.userDao = (UserDao)SpringContextUtil.getBean("UserDao");
+            userDao = (UserDao)SpringContextUtil.getBean("UserDao");
         }
         if (msgInfoDao == null){
-            this.msgInfoDao = (MsgInfoDao)SpringContextUtil.getBean("MsgInfoDao");
+            msgInfoDao = (MsgInfoDao)SpringContextUtil.getBean("MsgInfoDao");
         }
         SessionList sessionList = sessionListDao.selectByPrimaryKey(Integer.parseInt(sessionId));
         UserType user = userDao.selectByPrimaryKey(sessionList.getUserId());

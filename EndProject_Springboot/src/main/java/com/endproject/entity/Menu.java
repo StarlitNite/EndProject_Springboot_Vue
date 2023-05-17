@@ -20,7 +20,7 @@ public class Menu {
     private String path;
     //private Integer state;
     //private String menunum;
-    private String icon;
+    //private String icon;
 
     private List<Menu> child;
 }

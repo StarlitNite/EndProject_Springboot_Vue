@@ -47,6 +47,7 @@ export const updatehealthclock=(data:health):PromiseRes => request.post('/health
 
 //填报无法自主删除
 
+
 //获取可建立会话列表
 export const getSessionListNot=(data:chat):PromiseRes<{ list:{}[] }> => request.get('/sessionList/not?id='+data.snum);
 
@@ -62,8 +63,20 @@ export const delSession=(data:chat):PromiseRes=> request.get('/delSession?sessio
 //获取消息数据
 export const msgList=(data:chat):PromiseRes<{ list:{}[] }>=> request.get('/msgList?sessionId='+data.sessionId)
 
+//获取所有菜单用于展示
+export const getAllMenus=():PromiseRes<{ list:{}[] }>=>request.get('/menu/getAllMenu')
+
 //获取所有菜单用于权限修改
 export const getAllMenu=():PromiseRes<UserMenu>=>request.get('/role/getAllMenu')
+
+//添加菜单
+export const addMenu = (data:menu):PromiseRes =>request.post('/menu/addMenu',data)
+
+//删除菜单
+export const delMenu = (id:number):PromiseRes =>request.delete('/menu/delMenu/'+id)
+
+//修改菜单
+export const editMenu = (data:menu):PromiseRes => request.post('/menu/editMenu',data) //+data.id+'&pid='+data.pid+'&title='+data.title+'&path='+data.path
 
 //修改角色菜单权限
 export const SaveRole=(data:roleMenu):PromiseRes =>request.post('/role/SaveRole?rid='+data.rid+'&mids='+data.mid)

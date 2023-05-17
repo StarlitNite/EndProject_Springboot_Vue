@@ -51,3 +51,11 @@ interface chat {
     touserName:string
     sessionId:number
 }
+
+//interface
+interface menu{
+    id:number
+    pid:number
+    title:string
+    path:string
+}

@@ -17,6 +17,8 @@ public interface MenuService extends IService<Menu> {
 
     List<Menu> getChild(Menu root,List<Menu> all);
 
+    List<Menu> getAllMenu();
+
 
 
     /*void AddMenu(Menu menu);*/

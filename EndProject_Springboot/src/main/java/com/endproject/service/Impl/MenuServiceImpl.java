@@ -69,6 +69,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao,Menu> implements MenuSe
         return child;
     }
 
+    @Override
+    public List<Menu> getAllMenu() {
+        return menuDao.getAllMenu();
+    }
+
 
 
    /* @Override

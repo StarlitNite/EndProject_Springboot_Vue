@@ -42,8 +42,6 @@ const props = defineProps<{
   tree:Role
 }>()
 
-
-
 const state = reactive <{
   formLabelWidth:string,
   tree:Role,

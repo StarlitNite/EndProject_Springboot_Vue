@@ -21,5 +21,7 @@
     </select>
     <!--<insert id="addMenu" parameterType="com.endproject."></insert>-->
 
-
+    <select id="getAllMenu" resultType="com.endproject.entity.Menu">
+        SELECT id,pid,title,path FROM menu
+    </select>
 </mapper>

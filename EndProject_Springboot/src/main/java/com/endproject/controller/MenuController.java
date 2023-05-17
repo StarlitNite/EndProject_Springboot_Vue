@@ -36,6 +36,13 @@ public class MenuController {
         return ApiResult.success("获取菜单成功",menu);
     }
 
+    @ApiOperation("获取所有菜单")
+    @GetMapping(value = "getAllMenu")
+    public ApiResult<Object> getAllMenu(){
+        List<Menu> menus = menuService.getAllMenu();
+        return ApiResult.success(menus);
+    }
+
     /**
     * @Description: 先获取菜单中等于0的菜单的id，等于其添加的Pid
     * @date 2023/2/13 10:39
@@ -43,7 +50,8 @@ public class MenuController {
     **/
     @ApiOperation("新增菜单")
     @PostMapping("addMenu")
-    public ApiResult<Object> addMenu(Menu menu){
+    public ApiResult<Object> addMenu(@RequestBody Menu menu){
+        System.out.println(menu);
         menuService.save(menu);
 
         return ApiResult.success("新增菜单成功");
@@ -51,15 +59,17 @@ public class MenuController {
 
     @ApiOperation("删除菜单")
     @DeleteMapping("delMenu")
-    public ApiResult<Object> delMenu(Menu menu){
-        menuService.removeById(menu.getId());
+    public ApiResult<Object> delMenu(@PathVariable(value = "id") Integer id){
+        System.out.println(id);
+        menuService.removeById(id);
         return ApiResult.success();
     }
 
     @ApiOperation("修改菜单")
-    @PutMapping("editMenu")
-    public ApiResult<Object> editMenu(Menu menu){
-        menuService.saveOrUpdate(menu);
-        return ApiResult.success();
+    @PostMapping("editMenu")//报错因为没加@RequestBody
+    public ApiResult<Object> editMenu(@RequestBody Menu menu){
+        System.out.println(menu);
+        menuService.updateById(menu);
+        return ApiResult.success("修改菜单成功");
     }
 }

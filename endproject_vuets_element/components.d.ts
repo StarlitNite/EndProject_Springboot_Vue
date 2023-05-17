@@ -45,8 +45,10 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SaveDialog: typeof import('./src/components/SaveDialog.vue')['default']
+    SaveMenuDialog: typeof import('./src/components/SaveMenuDialog.vue')['default']
     Update: typeof import('./src/components/UpdateDialog.vue')['default']
     UpdateDialog: typeof import('./src/components/UpdateDialog.vue')['default']
     UpdateLeaveDialog: typeof import('./src/components/UpdateLeaveDialog.vue')['default']
+    UpdateMenuDialog: typeof import('./src/components/UpdateMenuDialog.vue')['default']
   }
 }

@@ -33,9 +33,9 @@ import {useStore} from "vuex";
 
 const state = reactive({
   ruleForm:{
-    snum:'19001020609',//admin1
+    snum:'admin1',//admin1
     password:'888',
-    role_id:'3'
+    role_id:'1'
   },
 
 })
