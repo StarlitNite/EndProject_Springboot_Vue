@@ -138,16 +138,16 @@ public class UserController {
     }
 
     @ApiOperation("超级管理员修改用户")
-    @PostMapping("editUser/{userId}")
-    public ApiResult<Object> editUser(@PathVariable Integer userId,@RequestBody SupeditUserInfo supeditUserInfo){
-        userService.editUserById(userId,supeditUserInfo);
+    @PostMapping("editUser")
+    public ApiResult<Object> editUser(String snum,Integer role_id){
+        userService.editUserById(snum,role_id);
         return ApiResult.success();
     }
 
-    @ApiOperation("学生修改密码")//半成品
-    @PostMapping("editpwd/{userId}")
-    public ApiResult<Object> editpwd(@PathVariable Integer userId,@RequestBody String password){
-        userService.stuupdateByid(userId,password);
+    @ApiOperation("学生修改密码")
+    @PostMapping("editpwd")
+    public ApiResult<Object> editpwd(String snum,String password){
+        userService.stuupdateByid(snum,password);
         return ApiResult.success();
     }
 

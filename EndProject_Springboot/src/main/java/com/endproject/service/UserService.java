@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.endproject.Model.dto.SupeditUserInfo;
 import com.endproject.Model.dto.addUserInfo;
 import com.endproject.entity.UserType;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ import java.util.List;
 public interface UserService extends IService<UserType> {
     void addUserByInfo(addUserInfo addUserInfo);
 
-    void editUserById(Integer userId, SupeditUserInfo supeditUserInfo);
+    void editUserById(@Param("snum")  String snum, @Param("role_id") Integer role_id);
 
-    void stuupdateByid(Integer userId, String password);
+    void stuupdateByid(@Param("snum") String snum,@Param("password") String password);
 
     void saveAll(List<UserType> users);
 

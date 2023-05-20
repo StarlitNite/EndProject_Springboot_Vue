@@ -28,13 +28,13 @@ public class UserServiceImpl extends ServiceImpl<UserDao,UserType> implements Us
     }
 
     @Override
-    public void editUserById(Integer userId, SupeditUserInfo supeditUserInfo) {
-        userDao.editUserById(userId, supeditUserInfo);
+    public void editUserById(String snum, Integer role_id) {
+        userDao.editUserById(snum, role_id);
     }
 
     @Override
-    public void stuupdateByid(Integer userId, String password) {
-        userDao.stuupdateByid(userId,password);
+    public void stuupdateByid(String snum, String password) {
+        userDao.stuupdateByid(snum,password);
     }
 
     @Override

@@ -146,7 +146,11 @@ const confirmEvent = id => {
   console.log(id)
   delleave(id).then(res =>{
     if (res.code===200){
-      alert("操作成功")
+      ElMessage({
+        showClose: true,
+        message: '操作成功',
+        type: 'success'
+      })
       getleave({
         role_id:role_id,
         snum:snum,
@@ -165,7 +169,11 @@ const confirmEvent = id => {
   })
 }
 const cancelEvent = () =>{
-  alert("操作取消")
+  ElMessage({
+    showClose: true,
+    message: '操作取消',
+    type: 'warning'
+  })
 }
 
 const formateDate = (time: string|undefined) =>{

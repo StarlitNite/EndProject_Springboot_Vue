@@ -1,48 +1,56 @@
 <template>
-  <div class="m-btn">
-    导入表格
-    <input type="file" accept=".xls,.xlsx" class="upload-file" @change="changeExcel($event)" />
-  </div>
+  <el-row :gutter="20">
+    <el-col :span="8">
+      <el-input placeholder="请输入学号" v-model="info.snum" clearable @clear="searchUser">
+        <template #append>
+          <el-button @click="searchUser">搜索</el-button>
+        </template>
+      </el-input>
+    </el-col>
+    <el-col :span="10">
+      <input type="file" accept=".xls,.xlsx" class="upload-file" @change="changeExcel($event)" />
+    </el-col>
+  </el-row>
   <el-table :data="tableData" border style="width:100%" v-if="tableData.nstu!=1">
-    <el-table-column prop="id" label="编号" width="64" />
-    <el-table-column prop="snum" label="学号" width="129" />
-    <el-table-column prop="username" label="姓名" width="94" />
-    <el-table-column prop="password" label="密码" width="162" />
-    <el-table-column prop="dorm_address" label="宿舍号" width="85" />
-    <el-table-column prop="tel" label="联系方式" width="178" />
-    <el-table-column prop="gender" label="性别" width="82" >
+<el-table-column prop="id" label="编号" /><!-- width="64"    -->
+    <el-table-column prop="snum" label="学号"  /><!-- width="129"   -->
+    <el-table-column prop="username" label="姓名"  /><!--  width="94"   -->
+    <!-- <el-table-column prop="password" label="密码" width="162" />   -->
+    <el-table-column prop="dorm_address" label="宿舍号" width="85" /><!--    -->
+    <el-table-column prop="tel" label="联系方式"  /><!--width="178"    -->
+    <el-table-column prop="gender" label="性别"  ><!--width="82"    -->
       <template v-slot:default="scope">
         <el-tag v-if="scope.row.gender==1">男</el-tag>
         <el-tag v-if="scope.row.gender==0">女</el-tag>
       </template>
     </el-table-column>
 <!--    <el-table-column prop="salt" hidden label="盐" />-->
-    <el-table-column prop="role_name" label="权限" width="103" />
-    <el-table-column prop="classe_name" label="班级" width="125" />
-    <el-table-column prop="major_name" label="专业" width="174" />
-    <el-table-column prop="department_name" label="院系" width="129" />
-    <el-table-column prop="counselor_name" label="导员" width="86" />
-    <el-table-column prop="status" label="状态" width="95" >
+    <el-table-column prop="role_name" label="权限"  /><!--   width="103" -->
+    <el-table-column prop="classe_name" label="班级"  /><!--width="125"    -->
+    <el-table-column prop="major_name" label="专业" width="174"/><!--     -->
+    <el-table-column prop="department_name" label="院系"  /><!-- width="129"   -->
+    <el-table-column prop="counselor_name" label="导员"  /><!-- width="86"   -->
+    <el-table-column prop="status" label="状态" width="95" ><!--     -->
       <template v-slot:default="scope">
           <el-tag v-if="scope.row.status==1">在校</el-tag>
-          <el-tag v-if="scope.row.status==0">离校</el-tag>
+          <el-tag v-if="scope.row.status==0" type="danger">离校</el-tag>
       </template>
     </el-table-column>
-    <el-table-column prop="health_status" label="填报状态" width="95" >
+    <el-table-column prop="health_status" label="填报状态"  ><!--width="95"    -->
       <template v-slot:default="scope">
         <el-tag v-if="scope.row.health_status==1">已填报</el-tag>
         <el-tag type="warning" v-if="scope.row.health_status==0">未填报</el-tag>
       </template>
     </el-table-column>
-    <el-table-column  label="操作" width="284" >
+    <el-table-column  label="操作" width="204" ><!--    -->
       <template #default="{row}" >
-          <el-button text @click="(row)"> 修改 </el-button>
+          <el-button text @click="UpdateRole(row)"> 修改 </el-button>
           <el-button text @click="DeleteRole"> 删除 </el-button>
-          <el-button text @click="SaveRole"> 提醒填报 </el-button>
       </template>
     </el-table-column>
   </el-table>
   <editUserDialog :visible="visible" @close="closeDialog" :form="rowData"/>
+
   <div >
     <el-pagination
         :current-page=info.Page
@@ -53,13 +61,12 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
     />
-
   </div>
 </template>
 
 <script lang="ts" setup>
 import {reactive, toRefs, ref, watch} from 'vue'
-import {getRole, getUser} from '../../request/api'
+import { getUser} from '../../request/api'
 import editUserDialog from '../../components/editUserDialog.vue'
 
 const state = reactive<{
@@ -77,11 +84,11 @@ const state = reactive<{
 }
 )
 const {tableData,visible,rowData,pagination,pageSize} = toRefs(state)
-let info={
-  snum:'',
+let info=reactive({
+  snum:"",
   Page:1,
   limit:10
-}
+})
 getUser({
   snum:info.snum,
   Page:info.Page,
@@ -94,6 +101,20 @@ getUser({
     console.log(pageSize.value)
   }
 })
+const searchUser = ()=>{
+  console.log(info.snum);
+  getUser({
+    snum:info.snum,
+    Page:info.Page,
+    limit:info.limit
+  }).then(res=>{
+    if (res.code===200){
+      tableData.value = res.result.records
+      pagination.value = res.result.total;
+      pageSize.value = res.result.size;
+    }
+  })
+}
 
 const handleSizeChange = (limit:number)=>{
   info.limit = limit
@@ -164,13 +185,17 @@ const closeDialog = (r?:'reload')=>{
   visible.value = false;
   rowData.value = {};//清空编辑框
   if (r==='reload'){
-    gerRole({
-      name:'',
-      Page:5,
-      limit:5
+    getUser({
+      snum:info.snum,
+      Page:info.Page,
+      limit:info.limit
     }).then(res=>{
       if (res.code===200){
         tableData.value = res.result.records
+        pagination.value = res.result.total;
+        pageSize.value = res.result.size;
+        console.log("pageSize.value")
+        console.log(pageSize.value)
       }
     })
   }

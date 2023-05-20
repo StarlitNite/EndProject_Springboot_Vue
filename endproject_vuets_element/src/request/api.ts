@@ -10,7 +10,7 @@ export const getMenu=():PromiseRes<UserMenu>=>request.get('/menu/Menu')
 export const getUser=(data:user):PromiseRes<{list:{}[]}> =>request.get('/user/getUser',{params:data})
 
 //修改用户
-export const editUser=(data:user):PromiseRes => request.post('/user/editUser',data)
+export const editUser=(data:user):PromiseRes => request.post('/user/editUser?snum='+data.snum+'&role_id='+data.role_id)
 
 //获取权限列表
 export const getRole=(data:role):PromiseRes<{ list:{}[] }>=>request.get('/role/getRole',{params:data})
@@ -20,6 +20,9 @@ export const UpdateRole=(data:Role):PromiseRes =>request.post('/role/UpdateRole'
 
 //获取角色权限
 export const getRoldById=(id:number):PromiseRes<{list:{}[]}> => request.get('/role/Role'+id)
+
+//用户修改密码
+export const editpwd = (data:adminLoginData):PromiseRes =>request.post('/user/editpwd?snum='+data.snum+'&password='+data.password)
 
 //删除角色
 /*export const DeleteRole=(data:Role)=>request.delete('/role/DeleteRole',data.id)*/
@@ -73,7 +76,7 @@ export const getAllMenu=():PromiseRes<UserMenu>=>request.get('/role/getAllMenu')
 export const addMenu = (data:menu):PromiseRes =>request.post('/menu/addMenu',data)
 
 //删除菜单
-export const delMenu = (id:number):PromiseRes =>request.delete('/menu/delMenu/'+id)
+export const delMenu = (id:number):PromiseRes =>request.post('/menu/delMenu/'+id)
 
 //修改菜单
 export const editMenu = (data:menu):PromiseRes => request.post('/menu/editMenu',data) //+data.id+'&pid='+data.pid+'&title='+data.title+'&path='+data.path

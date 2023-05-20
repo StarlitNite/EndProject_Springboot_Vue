@@ -9,11 +9,11 @@
     </insert>
 
     <update id="editUserById" >
-
+        update user set role_id=#{role_id} where snum = #{snum}
     </update>
 
     <update id="stuupdateByid">
-        update  user set password=#{password} where id=#{userId}
+        update user set password=#{password} where snum = #{snum}
     </update>
 
     <insert id="saveAll" parameterType="com.endproject.entity.UserType">

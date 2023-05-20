@@ -1,3 +1,4 @@
+/*
 package com.endproject.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -19,11 +20,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+*/
 /**
  * @author WangNaiLinn
  * @Description:院系专业班级增删改查
  * @date create in 2023/2/19 7:21
- */
+ *//*
+
 @RestController
 @RequestMapping("/cdm")
 @Slf4j
@@ -56,11 +59,13 @@ public class CDMController {
         return ApiResult.success(list);
     }
 
-    /**
+    */
+/**
     * @Description:院系专业班级管理
     * @date 2023/2/20 17:33
     * @author WangNaiLinn
-    **/
+    **//*
+
 
     @ApiOperation("获取院系")
     @GetMapping("/getDepartment")
@@ -166,3 +171,4 @@ public class CDMController {
         return null;
     }
 }
+*/

@@ -1,11 +1,11 @@
 <template>
   <el-button @click="SaveMenu">新增菜单</el-button>
   <el-table :data="tableData" border style="width: 100%">
-    <el-table-column prop="id" label="菜单编号" width="64" />
-    <el-table-column prop="pid" label="所属父菜单编号" width="164" />
-    <el-table-column prop="title" label="菜单名称" width="234" />
-    <el-table-column prop="path" label="路径" width="276" />
-    <el-table-column  label="操作" width="674" >
+    <el-table-column prop="id" label="菜单编号" /><!--   width="64"-->
+    <el-table-column prop="pid" label="所属父菜单编号"  /><!--   width="164"-->
+    <el-table-column prop="title" label="菜单名称"  /><!--  width="234"-->
+    <el-table-column prop="path" label="路径" /><!--   width="276"-->
+    <el-table-column  label="操作"  ><!--   width="674"-->
       <template  #default="{row}">
         <el-button text @click="updateMenu(row)"> 修改 </el-button>
         <el-popconfirm
@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import {reactive, toRefs, ref, watch} from 'vue'
-import {delleave, delMenu, getAllMenus} from '../../request/api'
+import {delMenu, getAllMenus} from '../../request/api'
 import Cookie from "js-cookie";
 
 const state = reactive<{
@@ -54,6 +54,7 @@ getAllMenus().then(res=>{
 //添加菜单
 const SaveMenu = ()=>{
   SaveMenuVisible.value = true;
+
 }
 
 
@@ -95,25 +96,28 @@ const closeSaveDialog = (r?:'reload')=>{//问号是可选属性
 //删除菜单
 const confirmEvent = id => {
   console.log(id)
-  delleave(id).then(res =>{
+  delMenu(id).then(res =>{
     if (res.code===200){
-      alert("操作成功")
-      delMenu({
-        role_id:role_id,
-      }).then(res=>{
-        if (Cookie.get(role_id)!=1){
-          tableData.value = res.result;
-          console.log(tableData.value)
-        }else {
-          tableData.value = res.result.records
-          console.log("--------------"+tableData.value)
+      ElMessage({
+        showClose: true,
+        message: '操作成功',
+        type: 'success'
+      })
+      getAllMenus().then(res=>{
+        if (res.code===200){
+          console.log(res.result)
+          tableData.value = res.result
         }
       })
     }
   })
 }
 const cancelEvent = () =>{
-  alert("操作取消")
+  ElMessage({
+    showClose: true,
+    message: '操作取消',
+    type: 'warning'
+  })
 }
 
 </script>

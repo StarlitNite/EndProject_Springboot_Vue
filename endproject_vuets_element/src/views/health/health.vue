@@ -18,7 +18,12 @@
       <el-tag type="success" v-if="scope.row.asymptomatic==0">否</el-tag>
       </template>
     </el-table-column>
-    <el-table-column prop="today_temp" label="今日体温" width="129" />
+    <el-table-column prop="today_temp" label="今日体温" width="129" >
+      <template v-slot:default="scope">
+        <el-tag type="danger" v-if="scope.row.today_temp>=37.5">{{ scope.row.today_temp }}</el-tag>
+        <el-tag type="success" v-if="scope.row.today_temp<37.5">{{ scope.row.today_temp }}</el-tag>
+      </template>
+    </el-table-column>
     <el-table-column prop="fever_and_cough" label="是否不适">
       <template v-slot:default="scope">
       <el-tag type="danger" v-if="scope.row.fever_and_cough==1">是</el-tag>
@@ -36,18 +41,18 @@
         <el-tag type="warning" v-if="scope.row.health_status==0">未填报</el-tag>
       </template>
     </el-table-column>
-    <el-table-column  label="操作" >
-      <template v-if="role_id!=3" #default="{row}">
+    <el-table-column v-if="role_id!=3" label="操作" >
+      <template  #default="{row}">
 <!--        <el-button :disabled="row.status!=0?true:false" text @click="updateleave"> 提醒填报 </el-button>-->
-        <el-button  text @click="updateleave(row)" > 查看填报 </el-button>
+        <el-button  text @click="lhealth(row)" > 查看填报 </el-button>
       </template>
-<!--      <template v-else #default="{row}">
+      <!--<template v-else #default="{row}">
             <el-button  :disabled="row.status!=0?true:false" @click="healthDialog(row)"  text> 填报 </el-button>
       </template>-->
     </el-table-column>
   </el-table>
- <AddHealthDialog :visible="visible" @close="closeDialog" />
-
+  <AddHealthDialog :visible="visible" @close="closeDialog" />
+  <LHealthDialog :visible="lHealthvisible" @close="closeLHealthDialog" :form="rowData"/>
 </template>
 
 <script lang="ts" setup>
@@ -55,18 +60,21 @@ import {reactive, toRefs, ref} from 'vue'
 import {gethealth, getleave} from '../../request/api'
 import Cookie from "js-cookie";
 import UpdateHealthDialog  from '../../components/AddHealthDialog.vue'
+import LHealthDialog from '../../components/LHealthDialog.vue'
 
 const state = reactive<{
   tableData:{}[],
   visible:boolean,
+  lHealthvisible:boolean,
   rowData:health,
 }>({
   tableData:[],
   visible:false,
+  lHealthvisible:false,
   rowData:{},
 })
 
-const {tableData,rowData,visible} = toRefs(state)
+const {tableData,rowData,visible,lHealthvisible} = toRefs(state)
 const role_id = Cookie.get("role_id")
 const snum = Cookie.get("snum")
 gethealth({
@@ -88,10 +96,15 @@ const addHealth = () =>{
   visible.value = true
 }
 
+const lhealth = (row:{}) =>{
+  lHealthvisible.value = true;
+  rowData.value = row;
+}
+
 //隐藏Dialog
 const closeDialog = (r?:'reload')=>{//问号是可选属性
   visible.value = false;
-  rowData.value = {};//清空编辑框
+
   if (r==='reload'){
     gethealth({
       role_id:role_id,
@@ -108,6 +121,11 @@ const closeDialog = (r?:'reload')=>{//问号是可选属性
       }
     })
   }
+}
+
+//关闭填报详情弹窗
+const closeLHealthDialog = (r?:'reload')=> {
+  lHealthvisible.value = false;
 }
 
 

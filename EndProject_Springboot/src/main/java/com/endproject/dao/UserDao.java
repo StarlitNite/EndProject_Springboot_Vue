@@ -17,9 +17,9 @@ public interface UserDao extends BaseMapper<UserType> {
 
      Boolean addUserByInfo(addUserInfo addUserInfo);
 
-     void editUserById(Integer userId, SupeditUserInfo supeditUserInfo);
+     void editUserById(@Param("snum") String snum ,@Param("role_id") Integer role_id);
 
-     void stuupdateByid(Integer userId, String password);
+     void stuupdateByid(@Param("snum") String snum,@Param("password") String password);
 
     void saveAll(UserType userType);
 

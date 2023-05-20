@@ -47,6 +47,7 @@ const close = (r?: 'reload') =>{
 }
 //点击确定
 const modify = ()=>{
+  console.log(newForm.value)
   UpdateRole(newForm.value).then(res =>{
     if (res.code === 200){
       console.log("--------------")

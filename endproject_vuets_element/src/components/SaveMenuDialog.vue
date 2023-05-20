@@ -53,6 +53,11 @@ const modify = ()=>{
   addMenu(newForm.value).then(res=>{
     if (res.code===200){
       close('reload')
+      ElMessage({
+        showClose: true,
+        message: '添加成功',
+        type: 'success'
+      })
     }
   })
 }

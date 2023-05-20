@@ -3,9 +3,10 @@
       ref="ruleFormRef"
       :model="ruleForm"
       :rules="rules"
-      class="demo-ruleForm"
+      class="login-box"
   >
-    <el-form-item label="学(工)号" prop="snum">
+    <h3 class="login-title">欢迎登录</h3>
+    <el-form-item label="账号" prop="snum">
       <el-input v-model="ruleForm.snum" type="text" autocomplete="off" />
     </el-form-item>
     <el-form-item label="密码" prop="password">
@@ -14,7 +15,7 @@
     <el-form-item label="身份" prop="role">
       <el-select v-model="ruleForm.role_id" placeholder="please select your role">
         <el-option label="管理员" value="1" />
-        <el-option label="教师" value="2" />
+        <el-option label="辅导员" value="2" />
         <el-option label="学生" value="3" />
       </el-select>
     </el-form-item>
@@ -58,7 +59,7 @@ const validatePassWord = (rule:unknown,value:String|undefined,cb:(msg?:string) =
 }
 //校验规则
 const rules = reactive({
-  userName:[
+  snum:[
     {required: true,message:'用户名不能为空',trigger:'blur'}
   ],
   password:[{
@@ -85,6 +86,7 @@ const Login=() => {
         store.dispatch('getMenu').then(res=>{
           router.push('/home')
         })
+
         /*getMenu().then(res =>{
           if (res.code==200){
             console.log(res)
@@ -104,4 +106,19 @@ const Login=() => {
 </script>
 
 <style lang='less' scoped>
+.login-box {
+  border: 1px solid #DCDFE6;
+  width: 350px;
+  margin: 180px auto;
+  padding: 35px 35px 15px 35px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  box-shadow: 0 0 25px #909399;
+}
+.login-title {
+  text-align: center;
+  margin: 0 auto 40px auto;
+  color: #303133;
+}
 </style>
