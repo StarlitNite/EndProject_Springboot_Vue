@@ -18,6 +18,9 @@ export const getRole=(data:role):PromiseRes<{ list:{}[] }>=>request.get('/role/g
 //修改角色 (有问题，前端传值为空）
 export const UpdateRole=(data:Role):PromiseRes =>request.post('/role/UpdateRole',data)
 
+//删除用户
+export const delUser = (id:number):PromiseRes =>request.post('/user/delUser/'+id)
+
 //获取角色权限
 export const getRoldById=(id:number):PromiseRes<{list:{}[]}> => request.get('/role/Role'+id)
 
@@ -25,7 +28,7 @@ export const getRoldById=(id:number):PromiseRes<{list:{}[]}> => request.get('/ro
 export const editpwd = (data:adminLoginData):PromiseRes =>request.post('/user/editpwd?snum='+data.snum+'&password='+data.password)
 
 //删除角色
-/*export const DeleteRole=(data:Role)=>request.delete('/role/DeleteRole',data.id)*/
+/*export const deleteRole=(id:number)=>request.delete('/role/DeleteRole',data.id)*/
 
 //获取请假列表
 export const getleave=(data:leave):PromiseRes<{list:{}[]}> => request.get('/leave/getleave',{params:data})
@@ -49,7 +52,6 @@ export const addhealth=(data:health):PromiseRes => request.post('/health/addheal
 export const updatehealthclock=(data:health):PromiseRes => request.post('/health/updatehealthclock',data)
 
 //填报无法自主删除
-
 
 //获取可建立会话列表
 export const getSessionListNot=(data:chat):PromiseRes<{ list:{}[] }> => request.get('/sessionList/not?id='+data.snum);
@@ -85,6 +87,16 @@ export const editMenu = (data:menu):PromiseRes => request.post('/menu/editMenu',
 export const SaveRole=(data:roleMenu):PromiseRes =>request.post('/role/SaveRole?rid='+data.rid+'&mids='+data.mid)
 
 //获取饼状图
- export const covidData = ():PromiseRes<IndexData> =>request.get('/covid/covidData')
+export const covidData = ():PromiseRes<IndexData> =>request.get('/covid/covidData')
 
-export const getPie = ():PromiseRes<IndexData> =>request.get('/covid/covidData')
+//获取首页新闻信息
+export const covidNews=():PromiseRes<news> => request.get('/covid/covidNews')
+//获取全部新闻信息
+export const getAllNews =():PromiseRes<news> =>request.get('/covid/getAllNews')
+//添加新闻信息
+export const addCovidNews =(data:news):PromiseRes =>request.post('/covid/addcovidNews',data)
+//修改新闻信息
+export const editCovidNews =(data:news):PromiseRes =>request.post('/covid/editcovidNews',data)
+//删除新闻信息
+export const delCovidNews = (id:number):PromiseRes =>request.post('/coviddelcovidNews/'+id)
+

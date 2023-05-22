@@ -30,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/role/")
 @Slf4j
-@Api("权限接口")
+@Api(value = "权限接口",tags = {"权限接口"})
 public class RoleController {
     @Autowired
     RoleMenuService roleMenuService;

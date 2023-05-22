@@ -1,5 +1,5 @@
 <template>
-  <div id="Map" style="width: 50%; height: 400px;"></div>
+  <div id="Map" style="width: 100%; height: 400px;"></div>
 </template>
 
 <script lang="ts" setup>

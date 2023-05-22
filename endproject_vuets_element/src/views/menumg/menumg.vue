@@ -80,7 +80,7 @@ const closeDialog = (r?:'reload')=>{//问号是可选属性
   }
 }
 //隐藏修改菜单Dialog
-const closeSaveDialog = (r?:'reload')=>{//问号是可选属性
+const closeSaveDialog = (r?:'reload')=>{
   updateMenuVisible.value = false;
   rowData.value = {};
   if (r==='reload'){

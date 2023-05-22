@@ -3,7 +3,7 @@
     <el-col :span="8">
       <el-input placeholder="请输入学号" v-model="info.snum" clearable @clear="searchUser">
         <template #append>
-          <el-button @click="searchUser">搜索</el-button>
+          <el-button @click="searchUser"><el-icon><Search /></el-icon></el-button>
         </template>
       </el-input>
     </el-col>
@@ -45,7 +45,17 @@
     <el-table-column  label="操作" width="204" ><!--    -->
       <template #default="{row}" >
           <el-button text @click="UpdateRole(row)"> 修改 </el-button>
-          <el-button text @click="DeleteRole"> 删除 </el-button>
+        <el-popconfirm
+            confirm-button-text="Yes"
+            cancel-button-text="No"
+            title="确认操作？"
+            @cancel="cancelEvent"
+            @confirm="confirmEvent(row.id)"
+        >
+          <template #reference>
+            <el-button text> 删除 </el-button>
+          </template>
+        </el-popconfirm>
       </template>
     </el-table-column>
   </el-table>
@@ -66,9 +76,9 @@
 
 <script lang="ts" setup>
 import {reactive, toRefs, ref, watch} from 'vue'
-import { getUser} from '../../request/api'
+import {delMenu, delUser, getAllMenus, getUser} from '../../request/api'
 import editUserDialog from '../../components/editUserDialog.vue'
-
+import { Search } from "@element-plus/icons-vue";
 const state = reactive<{
   tableData:{}[],
   pagination:[]//分页
@@ -199,6 +209,40 @@ const closeDialog = (r?:'reload')=>{
       }
     })
   }
+}
+
+//删除学生
+const confirmEvent = id => {
+  console.log(id)
+  delUser(id).then(res =>{
+    if (res.code===200){
+      ElMessage({
+        showClose: true,
+        message: '操作成功',
+        type: 'success'
+      })
+      getUser({
+        snum:info.snum,
+        Page:info.Page,
+        limit:info.limit
+      }).then(res=>{
+        if (res.code===200){
+          tableData.value = res.result.records
+          pagination.value = res.result.total;
+          pageSize.value = res.result.size;
+          console.log("pageSize.value")
+          console.log(pageSize.value)
+        }
+      })
+    }
+  })
+}
+const cancelEvent = () =>{
+  ElMessage({
+    showClose: true,
+    message: '操作取消',
+    type: 'warning'
+  })
 }
 </script>
 

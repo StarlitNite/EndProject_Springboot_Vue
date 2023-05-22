@@ -3,6 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.endproject.dao.CovidNewsDao">
 
+    <select id="getIndexNewsList" resultType="com.endproject.entity.CovidNews">
+        select * from covid_news order by id desc limit 8
+    </select>
+
+    <select id="getAllNewsList" resultType="com.endproject.entity.CovidNews">
+        select * from covid_news
+    </select>
 
 
 </mapper>

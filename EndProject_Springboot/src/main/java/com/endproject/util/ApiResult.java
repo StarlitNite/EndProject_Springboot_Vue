@@ -116,6 +116,7 @@ public class ApiResult<T> implements Serializable {
     public static<T> ApiResult<T> error(String message) {
         ApiResult<T> apiResult = new ApiResult<T>();
         apiResult.setMessage(message);
+        apiResult.setCode(StatusCodeConstant.STATUS_302);
         apiResult.setSuccess(false);
         return apiResult;
     }

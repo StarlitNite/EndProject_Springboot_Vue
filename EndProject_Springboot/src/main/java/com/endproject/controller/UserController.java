@@ -44,7 +44,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user/")
 @Slf4j
-@Api(value = "用户接口")
+@Api(value = "用户接口",tags = {"用户信息接口"})
 public class UserController {
 
     @Autowired
@@ -152,7 +152,7 @@ public class UserController {
     }
 
     @ApiOperation("删除用户")
-    @DeleteMapping("delUser/{userId}")
+    @PostMapping("delUser/{userId}")
     public ApiResult<Object> delUser(@PathVariable Integer userId){
         userService.removeById(userId);
         return ApiResult.success();

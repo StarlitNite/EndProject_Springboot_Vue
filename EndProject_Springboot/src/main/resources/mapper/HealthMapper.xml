@@ -13,7 +13,7 @@
         (SELECT counselor.id FROM counselor LEFT JOIN `user` ON `user`.snum = counselor.cnum WHERE snum=#{snum})
         order by  h.create_time DESC limit #{limit} offset #{page};
     </select>
-    <select id="check" resultType="java.lang.Boolean">
+    <select id="check" resultType="int">
         SELECT count(*)
         FROM health_clock
         WHERE TO_DAYS(#{create_time}) = TO_DAYS(NOW()) AND snum = #{snum}

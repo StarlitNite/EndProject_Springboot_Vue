@@ -18,7 +18,7 @@ public interface HealthClockDao extends BaseMapper<Health> {
 
     List<Health> getHealthByStu(@Param("snum") String snum, @Param("page") Integer page, @Param("limit") Integer limit);
 
-    boolean check(@Param("snum")String snum,@Param("create_time") Date create_time);
+    int check(@Param("snum")String snum,@Param("create_time") Date create_time);
 
     List<Health> getHealthByCou(@Param("snum") String snum,@Param("page") Integer page,@Param("limit") Integer limit);
 }

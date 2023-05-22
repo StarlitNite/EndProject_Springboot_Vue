@@ -1,16 +1,16 @@
 <template>
-  <el-dialog :model-value="visible" title="提交申请" :before-close="close">
-    <el-form  :label-width="formLabelWidth" >
-      <el-form-item label="原因" :label-width="formLabelWidth">
+  <el-dialog :model-value="visible" title="提交申请" :before-close="close" width="30%">
+    <el-form :model="newForm" :label-width="formLabelWidth"  :rules="rules">
+      <el-form-item label="原因" prop="reason" :label-width="formLabelWidth">
         <el-input v-model="newForm.reason" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="去向"  :label-width="formLabelWidth">
+      <el-form-item label="去向" prop="address" :label-width="formLabelWidth">
         <el-input v-model="newForm.address"  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="时长"  :label-width="formLabelWidth">
+      <el-form-item label="时长" prop="day" :label-width="formLabelWidth">
         <el-input v-model="newForm.day"  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="联系方式"  :label-width="formLabelWidth">
+      <el-form-item label="联系方式" prop="phone" :label-width="formLabelWidth">
         <el-input v-model="newForm.phone"  autocomplete="off" />
       </el-form-item>
     </el-form>
@@ -50,8 +50,17 @@ const emit = defineEmits<{
 //点击关闭
 const close = (r?: 'reload') =>{
   //传到父组件
+  newForm.value = {};
   emit('close',r);
 }
+
+//校验规则
+const rules = reactive({
+  reason:[{required: true, message: '*必填项',trigger: 'blur' }],
+  address:[{required: true, message: '*必填项', trigger: 'blur' }],
+  day:[{required: true, message: '*必填项', trigger: 'blur' }],
+  phone:[{required: true, message: '*必填项', trigger: 'blur' }],
+})
 
 //点击确定
 const modify = ()=>{

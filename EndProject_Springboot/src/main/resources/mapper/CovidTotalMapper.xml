@@ -4,7 +4,7 @@
 <mapper namespace="com.endproject.dao.CovidTotalDao">
 
     <select id="getAllTotal" resultType="com.endproject.entity.CovidTotal">
-        select * from covid_total
+        select * from covid_total order by id desc limit 1
     </select>
 
 </mapper>

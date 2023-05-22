@@ -91,11 +91,14 @@ public class HealthController {
     @PostMapping("addhealthclock")
     public ApiResult<Object> addhealthclock(@RequestBody Health health){
         System.out.println(health);
-        if (healthClockService.check(health.getSnum(),health.getCreate_time())){
-            return ApiResult.error("今日已填报，请勿重复填报");
-        }else {
+        int check = healthClockService.check(health.getSnum(),health.getCreate_time());
+        System.out.println("check");
+        System.out.println(check);
+        if (check==1){//healthClockService.check(health.getSnum(),health.getCreate_time())
             healthClockService.save(health);
             return ApiResult.success("填报完成");
+        }else {
+            return ApiResult.error("今日已填报，请勿重复填报");
         }
         /*如果当天已存在，无法重复创建，但可修改  error:今日已提交 if（time == dd） return error
         * 判断当前snum最新的一条数据和当前添加数据的时间，如果是同一天则返回false  添加失败，如是修改则不需此思路\

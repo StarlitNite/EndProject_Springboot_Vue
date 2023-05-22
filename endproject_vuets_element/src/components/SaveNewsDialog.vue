@@ -1,14 +1,14 @@
 <template>
-  <el-dialog :model-value="visible" title="添加菜单" :before-close="close" width="20%">
-    <el-form :model="newForm" :label-width="formLabelWidth" :rules="rules">
-      <el-form-item label="父菜单编号" prop="pid"  :label-width="formLabelWidth">
-        <el-input v-model="newForm.pid"  autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="菜单名称" prop="title" :label-width="formLabelWidth">
+  <el-dialog :model-value="visible" title="添加新闻" :before-close="close" width="30%">
+    <el-form :model="newForm" :label-width="formLabelWidth" :rules="rules" >
+      <el-form-item label="新闻标题" prop="title"  :label-width="formLabelWidth">
         <el-input v-model="newForm.title"  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="路径" prop="path" :label-width="formLabelWidth">
-        <el-input v-model="newForm.path"  autocomplete="off" />
+      <el-form-item label="正文内容" prop="content"  :label-width="formLabelWidth">
+        <el-input type="textarea" v-model="newForm.content"  autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="发布者" prop="publishby"  :label-width="formLabelWidth">
+        <el-input v-model="newForm.publishby"  autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -21,16 +21,16 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, toRefs, ref, defineProps, watch, defineEmits} from 'vue'
-import {addMenu} from "../request/api";
+import {reactive, toRefs, ref, defineProps, defineEmits} from 'vue'
+import {addCovidNews} from "../request/api";
 
 const props = defineProps<{
   visible:boolean;
-  form:menu
+  form:news
 }>()
 const state = reactive <{
   formLabelWidth:string;
-  newForm:menu
+  newForm:news
 }> ({
   formLabelWidth:'120px',
   newForm: {}
@@ -50,15 +50,15 @@ const close = (r?: 'reload') =>{
 
 //校验规则
 const rules = reactive({
-  pid:[{required: true, message: '*必填项',trigger: 'blur' }],
-  title:[{required: true, message: '*必填项', trigger: 'blur' }],
-  path:[{required: true, message: '*必填项', trigger: 'blur' }],
+  title:[{required: true, message: '*必填项',trigger: 'blur' }],
+  content:[{required: true, message: '*必填项', trigger: 'blur' }],
+  publishby:[{required: true, message: '*必填项', trigger: 'blur' }],
 })
 
-
 const modify = ()=>{
+  newForm.value.create_time = Date.now();
   console.log(newForm.value)
-  addMenu(newForm.value).then(res=>{
+  addCovidNews(newForm.value).then(res=>{
     if (res.code===200){
       close('reload')
       ElMessage({

@@ -15,7 +15,7 @@ public interface HealthClockService extends IService<Health> {
 
     List<Health> getHealthByStu(String snum,Integer Page,Integer Limit);
 
-    boolean check(String snum, Date create_time);
+    int check(String snum, Date create_time);
 
     List<Health> getHealthByCou(String snum, Integer page, Integer limit);
 }

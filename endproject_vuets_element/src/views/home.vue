@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container class="homecontainer">
-      <el-header >
+      <el-header>
         <div class="head">
           <div class="div1" >校园疫情管理系统</div>
           <div class="div2">
@@ -108,18 +108,21 @@ const closeDialog = (r?:'reload')=>{//问号是可选属性
 }
 .head{
   display: flex ;
-  flex-direction: row;
-}
-.div1{
+  width:100%;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 25px;
+  height:100%;
 }
-.div2{
-  margin-left: 1270px;
-  margin-top: 30px;
-  float: right;
-  font-size: 12px;
-}
+/*.div1{*/
+/*  align-items: center;*/
+/*  margin-top: 25px;*/
+/*}*/
+/*.div2{*/
+/*  margin-left: 1270px;*/
+/*  margin-top: 30px;*/
+/*  float: right;*/
+/*  font-size: 12px;*/
+/*}*/
 .el-header{
   background-color: #1b7cfbbb;
   color: #333;
@@ -139,7 +142,7 @@ const closeDialog = (r?:'reload')=>{//问号是可选属性
 .el-main {
   background-color: #E9EEF3;
   color: #333;
-  text-align: center;
+  text-align: start;
   line-height: 10px;
 }
 

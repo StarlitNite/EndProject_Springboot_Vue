@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="visible" title="菜单权限分配" :before-close="close">
+  <el-dialog :model-value="visible" title="菜单权限分配" :before-close="close" width="15%">
     <el-tree
         ref="treeRef"
         :data="menuTree"
@@ -57,8 +57,8 @@ const treeRef = ref()
 const {formLabelWidth,menuTree,updateTree,tree} = toRefs(state)
 watch(()=> props.tree,()=>{
   tree.value = {...props.tree}
-  console.log("watch")
-  console.log(tree.value.id)
+  /*console.log("watch")
+  console.log(tree.value.id)*/
 })
 
 getAllMenu().then(res=>{
@@ -87,7 +87,7 @@ const modify = ()=>{
   updateTree.value.rid = tree.value.id
   /*console.log("updateTree.value.rid")
   console.log(updateTree.value.rid)
-  console.log("tree.value.rid")
+  console.log("tree.value.id")
   console.log(tree.value.id)*/
   updateTree.value.mid = treeRef.value!.getCheckedKeys(false)
   /*console.log("updateTree.value.mid")

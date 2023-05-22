@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="visible" title="用户编辑" :before-close="close">
+  <el-dialog :model-value="visible" title="用户编辑" :before-close="close" width="20%">
     <el-form :model="newForm" :label-width="formLabelWidth" >
       <el-form-item label="姓名"  :label-width="formLabelWidth">
         <el-input v-model="newForm.username" disabled autocomplete="off" />
@@ -42,7 +42,6 @@ watch(()=> props.form,()=>{
   console.log("props.form")
   console.log(props.form)
   newForm.value = {...props.form}
-
 })
 const emit = defineEmits<{
   (event:'close',r?: 'reload'):void

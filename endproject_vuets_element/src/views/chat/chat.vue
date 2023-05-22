@@ -2,14 +2,8 @@
   <div class="main">
     <div class="main_up">
       <div v-if="curUserName !== ''">
-        <el-button @click="start">登录</el-button>
-<!--        <el-button @click="openDialog('注册')">注册</el-button>-->
+        <el-button @click="start">连接<el-icon><Link /></el-icon></el-button>
       </div>
-<!--      <div v-else>
-        {{curUserName}}
-        <el-button type="info" @click="loginOut">退出登录</el-button>
-      </div>-->
-
     </div>
     <div class="main_down">
       <div class="left">
@@ -17,7 +11,7 @@
           <div class="label_title">
             已建立会话
           </div>
-          <div :class="curSessionId == item.id ? 'box_select' : 'box'" v-for="item in sessionList_already" :key="item.id">
+          <div :class="curSessionId == item.id ? 'box_select' : 'box'" v-for="item in state.sessionList_already" :key="item.id">
             <div class="box_left"  @click="startSession(item.id)">
               {{item.listName}}
             </div>
@@ -26,16 +20,17 @@
                 {{item.unReadCount}}
               </div>
               <div class="right_left_del">
-                <el-button  @click="delSession2(item.id)">{{curSessionId}}</el-button>
+                <el-icon @click="delSession2(item.id)"><Close /></el-icon>
               </div>
             </div>
           </div>
         </div>
+
         <div class="left_down">
           <div class="label_title">
             可建立会话
           </div>
-          <div v-for="item in sessionList_not" :key="item.snum" class="box" @click="createSession2(item.snum, item.username)">
+          <div v-for="item in state.sessionList_not" :key="item.snum" class="box" @click="createSession2(item.snum, item.username)">
             <div class="box_left">
               {{item.username}}
             </div>
@@ -62,22 +57,10 @@
               @keyup.enter.native = "sendMsg"
               v-model="textarea">
           </el-input>
-
-           <el-button  @click="sendMsg">发送</el-button>
         </div>
       </div>
     </div>
-<!--    <el-dialog
-        :title="dialogTitle"
-        :visible.sync="dialogVisible"
-        width="30%"
-    >
-      <el-input v-model="loginName" placeholder="请输入用户名..."></el-input>
-      <span slot="footer" class="dialog-footer">
-				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="loginOrRegister">确 定</el-button>
-			</span>
-    </el-dialog>-->
+
   </div>
 </template>
 
@@ -86,16 +69,26 @@ import {reactive, toRefs, ref, onUpdated} from 'vue'
 import Cookie from "js-cookie";
 import {getSessionListNot,sessionListAlready,createSession,delSession,msgList} from '../../request/api'
 import {log} from "echarts/types/src/util/log";
+import { Close,Link } from "@element-plus/icons-vue";
 
-const state = reactive<{
-  list:{}[],
+/*
+ list:{}[],
   textarea:string,
   curUserId:string,
   curUserName:string,
   curSessionId:number,
   sessionList_already:{}[],
   sessionList_not:{}[],
-}>({
+  *
+  target
+  list:[],
+  textarea:'',
+  curUserId:'',
+  curUserName:'',
+  curSessionId:99999,
+  sessionList_already:[],
+  sessionList_not:[]*/
+const state = reactive({
   list:[],
   textarea:'',
   curUserId:'',
@@ -104,8 +97,7 @@ const state = reactive<{
   sessionList_already:[],
   sessionList_not:[]
 })
-
-let {textarea,list,curSessionId,sessionList_already,sessionList_not} = toRefs(state)
+let {textarea,list,curSessionId} = toRefs(state)//sessionList_already,sessionList_not
 const curUserId = Cookie.get("snum")
 //console.log(curUserId)
 const curUserName  = Cookie.get("userName")
@@ -176,8 +168,6 @@ const sendMsg = ()=>{
   console.log("textarea")
   console.log(textarea.value)
   websock.send(textarea.value)
-  console.log("websock.send(\"Hello server!\")")
-  websock.send("Hello server!");
   textarea.value=''
 }
 //
@@ -192,7 +182,7 @@ const start=() =>{
   startSession(99999)
 }
 
-// 获取可建立会话列表
+
 /*getSessionListNot({
   snum:curUserId
 }).then(res=>{
@@ -200,18 +190,27 @@ const start=() =>{
   console.log("获取可建立会话列表")
   console.log(sessionList_not)
 })*/
-const getSessionListNot2=(curUserId:string)=>{
+// 获取可建立会话列表
+const getSessionListNot2=async(curUserId:string)=>{
   console.log("getSessionListNot2---------curUserId")
   console.log(curUserId)
-  getSessionListNot({snum:curUserId}).then(res=>{
-    sessionList_not = res.result
-    console.log("获取可建立会话列表")
-    console.log(sessionList_not)
-  })
+
+
+  const res = await getSessionListNot({snum:curUserId});
+  console.log("sessionList_not")
+  console.log(res.result)
+  state.sessionList_not = res.result
+  console.log(state.sessionList_not)
 }
+/*.then(res=>{
+
+  sessionList_not = res.result
+  console.log("获取可建立会话列表")
+  console.log(sessionList_not)
+})*/
 //方法（）{api}
 
-// 获取已存在的会话列表
+
 /*sessionListAlready({
   snum:curUserId
 }).then(res=>{
@@ -219,15 +218,18 @@ const getSessionListNot2=(curUserId:string)=>{
   console.log("获取已存在的会话列表")
   console.log(sessionList_already)
 })*/
-const sessionListAlready2=(curUserId:string)=>{
+// 获取已存在的会话列表
+const sessionListAlready2=async (curUserId:string)=>{
   console.log("sessionListAlready2---------curUserId")
   console.log(curUserId)
-  sessionListAlready({snum:curUserId}).then(res=>{
-    sessionList_already = res.result
-    console.log("获取已存在的会话列表")
-    console.log(sessionList_already)
-  })
+  const res = await sessionListAlready({snum:curUserId});
+  state.sessionList_already = res.result
 }
+// .then(res=>{
+//   sessionList_already = res.result
+//   console.log("获取已存在的会话列表")
+//   console.log(sessionList_already)
+// })
 // 创建会话
 /*createSession({snum:curUserId,tosnum:'',toUserName:''}).then(res=>{
 
@@ -277,12 +279,11 @@ const startSession = (sessionId:number)=>{
   getSessionListNot(curUserId);
   sessionListAlready(curUserId);
 })*/
-const delSession2 = (sessionId:number)=>{
+const delSession2 =async (sessionId:number)=>{
   console.log(sessionId)
-  delSession({sessionId:sessionId}).then(res=>{
-
-    getSessionListNot(curUserId);
-    sessionListAlready(curUserId);
+  await delSession({sessionId:sessionId}).then(res=>{
+    getSessionListNot2(curUserId);
+    sessionListAlready2(curUserId);
   })
 }
 

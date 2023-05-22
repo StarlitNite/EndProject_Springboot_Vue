@@ -1,6 +1,6 @@
 <template>
-  <span>全国疫情</span>
-  <div id="pie" style="width: 50% ; height: 400px" ></div>
+  <span>全国各省市疫情</span>
+  <div id="pie" style="width: 100% ; height: 400px" ></div>
 </template>
 
 <script lang="ts" setup>

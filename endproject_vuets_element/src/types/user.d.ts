@@ -14,3 +14,9 @@ interface user {
     status:number;
     health_status:number
 }
+
+interface editpassword{
+    snum:string;
+    password:string;
+    checkPass:string
+}

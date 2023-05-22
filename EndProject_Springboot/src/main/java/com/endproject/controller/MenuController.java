@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/menu/")
 @Slf4j
-@Api(value = "菜单接口")
+@Api(value = "菜单接口",tags = {"每日填报接口"})
 public class MenuController {
 
     @Autowired

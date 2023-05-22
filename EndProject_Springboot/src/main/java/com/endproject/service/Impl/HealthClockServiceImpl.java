@@ -28,7 +28,7 @@ public class HealthClockServiceImpl extends ServiceImpl<HealthClockDao, Health> 
     }
 
     @Override
-    public boolean check(String snum, Date create_time) {
+    public int check(String snum, Date create_time) {
         return healthClockDao.check(snum,create_time);
     }
 

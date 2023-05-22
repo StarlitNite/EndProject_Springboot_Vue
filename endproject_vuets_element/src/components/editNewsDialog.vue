@@ -1,20 +1,20 @@
 <template>
-  <el-dialog :model-value="visible" title="修改菜单" :before-close="close" width="20%">
+  <el-dialog :model-value="visible" title="新闻编辑" :before-close="close" width="30%">
     <el-form :model="newForm" :label-width="formLabelWidth" >
-      <el-form-item label="所属父菜单编号"  :label-width="formLabelWidth">
-        <el-input v-model="newForm.pid"  autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="菜单名称"  :label-width="formLabelWidth">
+      <el-form-item label="标题"  :label-width="formLabelWidth">
         <el-input v-model="newForm.title"  autocomplete="off" />
       </el-form-item>
-      <el-form-item label="路径"  :label-width="formLabelWidth">
-        <el-input v-model="newForm.path"  autocomplete="off" />
+      <el-form-item label="正文"  :label-width="formLabelWidth">
+        <el-input v-model="newForm.content" type="textarea"  autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="发布者"  :label-width="formLabelWidth">
+        <el-input v-model="newForm.publishby" disabled autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button  @click="close">取消</el-button>
-        <el-button type="primary" @click="modify">提交</el-button>
+        <el-button type="primary" @click="modify">确定</el-button>
       </span>
     </template>
   </el-dialog>
@@ -22,25 +22,28 @@
 
 <script lang="ts" setup>
 import {reactive, toRefs, ref, defineProps, watch, defineEmits} from 'vue'
-import {editMenu} from "../request/api";
+import {editCovidNews} from "../request/api";
 
 
 const props = defineProps<{
   visible:boolean;
-  form:menu
+  form:news
 }>()
 const state = reactive <{
   formLabelWidth:string;
-  newForm:menu
+  newForm:news
 }> ({
   formLabelWidth:'120px',
   newForm: {}
 })
 const { formLabelWidth,newForm } = toRefs(state)
+
 watch(()=> props.form,()=>{
+  console.log("props.form")
+  console.log(props.form)
   newForm.value = {...props.form}
-  console.log("watch")
-  console.log(newForm.value.id)
+  console.log("newForm.value")
+  console.log(newForm.value)
 })
 const emit = defineEmits<{
   (event:'close',r?: 'reload'):void
@@ -52,14 +55,17 @@ const close = (r?: 'reload') =>{
 }
 //点击确定
 const modify = ()=>{
-  console.log("modify")
   console.log(newForm.value)
-  editMenu(newForm.value).then(res=>{
-    if (res.code===200){
-      close('reload')
+  editCovidNews(newForm.value).then(res =>{
+    if (res.code === 200){
+      close('reload');
+      ElMessage({
+        showClose: true,
+        message: '修改成功',
+        type: 'success'
+      })
     }
   })
-
 
 }
 </script>
